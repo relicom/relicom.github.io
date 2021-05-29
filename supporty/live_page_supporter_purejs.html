@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Judith Smith About profile</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/reset_flex.css"/>
+        <link rel="stylesheet" href="css/color_pallet.css" type="text/css"/>
+        <link rel="stylesheet" href="css/font_awesome_all.css" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="css/toastify.css"/>
+        <link rel="stylesheet" type="text/css" href="css/live.css"/>
+    </head>
+    <body>
+        <div class="live_div">
+            <div class="live_wrapper">
+                <div class="chat_div">
+                    <div class="chat_sub_div">
+                        <div class="cam_div">
+                            <div id="supporter_video">
+                                <span class="name"></span>
+                                <video autoplay playsinline></video>
+                                <div class="vi_sp">
+                                    <span class="speed"></span>
+                                    <span class="viewers"><i class="fa fa-eye"></i><span></span></span>
+                                </div>
+                            </div>
+                            <div id="customer_video">
+                                <span class="name"></span>
+                                <video autoplay playsinline></video>
+                                <div class="vi_sp">
+                                    <span class="speed"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controller_div">
+                            <span id="close_live_bt" class="button_ctr2 bg-css-red" title="خروج"><i class="fa fa-arrow-right"></i></span>
+                            <span id="ban_customer_bt" class="button_ctr2 bg-css-purple" title="مسدود کردن کاربر"><i class="fas fa-ban"></i></span>
+                            <span id="close_customer_bt" class="button_ctr2 bg-css-brown" title="خاتمه دادن به گفتگو"><i class="fa fa-times"></i></span>
+                            <span id="min_max_bt" class="button_ctr2 bg-css-dirtyyellowgreen" title="بزرگ نمایی و کوچک نمایی"><i class="fa fa-expand"></i></span>
+                            <a href="/supporty_template_rtl/help/help_main.html" target="_blank" style="display:flex"><span id="help_bt" class="button_ctr2 bg-css-lightblue" title="راهنما"><i class="fa fa-question-circle"></i></span></a>
+                            <span id="mobile_pm_bt" class="button_ctr2 bg-css-pink m_show" title="مشاهده صفحه محصول و پیام ها"><i class="fa fa-window-minimize"></i><span class="hide">1</span></span>
+                            <span id="add_remove_customer_bt" class="button_ctr2 bg-css-blue" title="لیست انتظار"><i class="fas fa-hand-pointer"></i></span>
+                        </div>
+                    </div>
+                    <div id="chat_sub2" class="chat_sub_div">
+                        <div class="pm_div">
+                            <!--*** content inside of editable div is for test-->
+                            <!--                                پیام ها شامل:
+                                                                این پیشنهاد ویژه برای شما : 
+                                                                 <img loading="lazy" src="http://localhost:8383/supporty_template_rtl/sample_store/bread_basket.jpg" data-title="مگنت طرح سبد نان کد 101" data-link="http://localhost:8383/supporty_template_rtl/sample_store/bread_basket.html">
+                                                                اگر مایل بودید متونید لینک زیر را هم ببنید که پروفایل مجموعه ما است
+                                                                http://localhost:8383/supporty_template_rtl/motherpage_home.html#profile_site-->
+                            <div id="message" contenteditable>
+                            </div>
+                            <div class="chat_bt_div">
+                                <span id="private_bt" class="button_ctr bg-css-brown"><i class="fa fa-shield-alt"></i> خصوصی</span>
+                                <span id="offer_bt" class="button_ctr bg-css-green"><i class="fas fa-mug-hot"></i> پیشنهاد</span>
+                                <span id="public_bt" class="button_ctr bg-css-blue"><i class="fa fa-bullhorn"></i> عمومی</span>
+                            </div>
+                        </div>
+
+                        <div id="text_div">
+                            <!--                            <div class="msg supporter">
+                                                            <div class="msg_header"><span class="name">arooshahfdsfdsfdsfsdfsdfsdhjfklhjdskhfjkdshj</span><span class="msg_num">#1232343</span></div>
+                                                            <span class="msg_txt">Hello please give me offer of new brand that it's fit for my requirement with better situation in price and quality</span>
+                                                            <div class="msg_offer"> <img loading="lazy" src="img/bamboo.jpg"><span>this is offer of item #1 that new released this is offer of item #1 that new released this is offer of item #1 that new released this is offer of item #1 that new released</span></div>
+                                                            <div class="msg_offer"> <img loading="lazy" src="img/bamboo.jpg"><span>this is offer of item #1 that new released this is offer of item #1 that new released this is offer of item #1 that new released this is offer of item #1 that new released</span></div>
+                                                            <span class="msg_txt">this is also an alternative to bought by your budget please review it too</span>
+                                                            <a class="msg_link" href="https://azimot.github.io/" target="_blank"><i class="fas fa-external-link-alt"></i>https://azimot.github.io/item1/subitem2/subitem2/subitem4/detail_of_item_is_useful</a>                            
+                                                            <a class="msg_link" href="https://azimot.github.io/" target="_blank"><i class="fas fa-external-link-alt"></i>https://azimot.github.io/item1/subitem2/subitem2/subitem4/detail_of_item_is_useful</a>                            
+                                                        </div>
+                                                        <div class="msg customer" data-id="abc123">
+                                                                                        <div class="msg_header"><span class="name">arooshahfdsfdsfdsfsdfsdfsdhjfklhjdskhfjkdshj</span><span class="msg_num">#1232343</span></div>
+                                                            <div class="msg_header"><span class="name">arooshahfdsfdsfdsfsdfsdfsdhjfklhjdskhfjkdshj</span><span class="button_ctr bg-css-darkblue"><i class="fas fa-lock-open"></i> unlock</span></div>
+                                                            <span class="msg_txt">Hello please give me offer of new brand that it's fit for my requirement with better situation in price and quality</span>
+                                                            <div class="msg_offer"> <img loading="lazy" src="img/bamboo.jpg"><span>this is offer of item #1 that new released this is offer of item #1 that new released this is offer of item #1 that new released this is offer of item #1 that new released</span></div>
+                                                            <span class="msg_txt">this is also an alternative to bought by your budget please review it too</span>
+                                                            <a class="msg_link" href="https://azimot.github.io/" target="_blank"><i class="fas fa-external-link-alt"></i>https://azimot.github.io/item1/subitem2/subitem2/subitem4/detail_of_item_is_useful</a>                            
+                                                        </div>-->
+
+                        </div>
+                        <div class="slogan m_hide1">
+                            <a href="http://daum.net:8383/supporty_template_rtl/site.html" target="_blank"><span>ساپورتی ، قدرت فروش جمعی</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="iframe_div m_hide">
+
+                    <iframe id="iframe" src="/supporty_template_rtl/sample_store/bread_basket.html"></iframe>
+
+                    <span id="visited_bt" class="button_ctr2 bg-css-purple"><i class="fas fa-chart-bar"></i></span>
+                    <div class="item_bar_div hide">
+                        <div class="item_bar_control">
+                            <i id="item_bar_close" class="fas fa-times"></i>
+                            <i id="item_bar_refresh" class="fas fa-sync"></i>
+                        </div>
+                        <div class="item_bar_wrapper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal_div" class="hide">
+            <i class="fas fa-times modal_close_bt corner_close"></i>
+            <div id="modal_dialog">
+                <div id="dialog_title"></div>
+                <div id="dialog_body"></div>
+                <div id="dialog_control"></div>
+                <div class="dialog_close">
+                    <span class="button_ctr2 bg-css-orange modal_close_bt bt"><i class="fas fa-times"></i> <span id="close_bt">فعلا نه</span></span>
+                </div>
+            </div>
+        </div>
+
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.1.0/bootbox.min.js"></script>-->
+
+
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <script src="js/toastify.js"></script>
+        <script src="js/general_tools.js"></script>
+        <script src="js/db.js"></script>
+        <script src="js/adapter.min.js"></script>
+        <script src="js/janus.js"></script>
+        
+        <script src="js/live_supporter.js"></script>
+        <script src="js/live_helper.js"></script>
+        
+        <!--<script src="js/messageCMD.js"></script>-->
+    </body>
+</html>

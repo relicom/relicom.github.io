@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ثبت صفحات محصول</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="css/font_awesome_all.css">
+        <link type="text/css" rel="stylesheet" href="css/toastify.css">
+        <link type="text/css" rel="stylesheet" href="css/site_item_indexer.css">
+    </head>
+    <body>
+        <div id="parent">
+            <div id="control">
+                <div>
+                    <span><b>ثبت صفحات محصول سایت توسط ادمین : </b></span>
+                    <a href="#" target="_blank"><span class="button_ctr bggreen">راهنما</span></a>
+                    <span id="new_bt" class="button_ctr bgblue hide1">شروع دوباره</span>
+                </div>
+            </div>
+            <div id="body">
+
+
+                <div id="link_table_parent" class="m_30 hide">
+                    <p class="title">لیست لینک صفحات جهت بررسی و ثبت : </p>
+                    <div class="table_wrapper switch_1">
+                        <div class="table_div">
+                            <table class="table_1" id="ban_table">
+                                <thead>
+                                    <tr class="fix_row">
+                                        <th class="fix_column">شماره</th>
+                                        <th>وضعیت</th>
+                                        <th>عنوان و آدرس صفحه</th>
+                                        <th>عکس</th>
+                                        <th>عملیات جانبی</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p id="register_report" class="hint"></p>
+                    <span id="selector_check_bt" class="button_ctr bgblue m_30">شروع بررسی محتوا</span>
+                    <span id="send_bt" class="button_ctr bgblue m_30 hide">ارسال درخواست ثبت</span>
+                    <span id="next_check_bt" class="button_ctr bgpurple m_30 hide">بریم برای سری بعدی؟</span>
+                </div>
+
+
+                <div id="textarea_div" class="hide">
+                    <textarea id="link_area" class="ltr" placeholder="در هر خط یک لینک و حداکثر 500 عدد  _ لینک ها را اینجا وارد کنید">
+http://localhost:8383/supporty_template_rtl/sample_store/bread_basket.html
+http://localhost:8383/supporty_template_rtl/sample_store/car_air_filter.html
+http://localhost:8383/supporty_template_rtl/sample_store/hoddie.html
+http://localhost:8383/supporty_template_rtl/sample_store/nail_gel_polish.html
+http://localhost:8383/supporty_template_rtl/sample_store/toshiba_hdd.html
+                    </textarea>
+                </div>
+                <div id="link_control" class="m_30 hide">
+                    <p class='hint filter hide'>در مرحله بعدی لینک ها با مشخصات صفحات محصول (همان selector ها) بررسی میشوند و ممکن است کمی زمانگیر باشد در صورتی که مطمئن نیستید که کلیه این لینک ها متعلق به صفحات محصول شما است اگر لینک صفحات محصول دارای عبارت مشترک خاصی است که در بقیه صفحات وجود ندارد (مثلا product/item) صفحات محصول را از بین کل لینک ها فیلتر کنید تا زمان کمتری صرف بررسی شود</p>
+                    <div class="ltr filter hide">
+                        <input type="text" id="link_filter_input" placeholder="عبارت مشترک صفحه محصول">
+                        <span id="link_filter_bt" class="button_ctr bgpurple">فیلتر کن</span>
+                    </div>
+                    <span id="link_check_bt" class="button_ctr bgblue m_30">لینک ها را بررسی اولیه کن</span>
+                    <span id="link_accept_bt" class="button_ctr bgblue m_30 hide">بریم مرحله بعدی</span>
+                </div>
+
+
+                <div id="sitemap_div" class="m_30 hide">
+                    <p class="title">لیست سایت مپ ها : </p>
+                    <div id="sitemap_table" class="table_wrapper switch_1 hide">
+                        <div class="table_div">
+                            <table class="table_1" id="ban_table">
+                                <thead>
+                                    <tr class="fix_row">
+                                        <th class="fix_column">شماره</th>
+                                        <th>وضعیت</th>
+                                        <th>نام فایل سایت مپ</th>
+                                        <th>تعداد صفحات</th>
+                                        <th>حذف شود ؟</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="sitemap_control" class="m_30 hide">
+                    <p class="hint sitemap_ctr">اگر لینک سایت مپ یا فایل های آنرا دارید میتوانید لینک های سایت را لیست کنیم در غیر اینصورت میتونید لینک های صفحات محصول سایت را در بخش بعدی وارد کنید</p>
+                    <p class="hint sitemap_ctr">دقت کنید اگر از طریق لینک ، سایت مپ را وارد میکند و لینک صفحات در چندین سایت مپ قرار دارند ، لینک سایت مپ اصلی را وارد کنید</p>
+                    <div class="sitemap_ctr">
+                        <label for="sitemap_file">سایت مپ از طریق لینک : </label>
+                        <input type="url" id="sitemap_url" class="ltr" placeholder="آدرس فایل سایت مپ اصلی" value="http://localhost:8383/supporty_template_rtl/sitemap/main.xml">
+                    </div>
+                    <p class="hint sitemap_ctr">چنانچه لینک صفحات شما در چندین سایت مپ قرار گرفته کلیه سایت مپ ها را بصورت فایل وارد کنید و سایت مپ اصلی که خود لینک سایت مپ های فرعی را دارد را وارد نکنید</p>
+                    <div class="sitemap_ctr">
+                        <label for="sitemap_file">سایت مپ از طریق فایل : </label>
+                        <input type="file" id="sitemap_file" multiple accept=".xml">
+                    </div>
+                    <span id="sitemap_link_check_bt" class="button_ctr bgblue sitemap_ctr m_30">بررسی سایت مپ</span>
+                    <span id="sitemap_link_list_bt" class="button_ctr bgblue m_30 hide">بریم مرحله بعد</span>
+                    <span id="sitemap_ignore_bt" class="button_ctr bgpurple sitemap_ctr m_30">نمیخواد خودم لینک ها را وارد میکنم</span>
+                </div>
+
+                <span id="exit_bt" class="button_ctr bgpurple m_30 hide">خروج از این صفحه</span>
+
+                <div id="report">
+                    <p class="inf">بزار اطلاعات رو بررسی کنم الان خبرش رو میدم</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="js/tln.js"></script>
+        <script src="js/toastify.js"></script>
+        <script src="js/site_item_indexer.js"></script>
+    </body>
+</html>
