@@ -1,0 +1,145 @@
+#s61w *{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing:border-box;
+    outline: 0;
+}
+#s61w a{
+    text-decoration:none;
+    color: black;
+}
+#s61w{
+    direction: rtl;
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    flex-direction: row;
+    background: white;
+    width: 10cm;
+    max-width: calc(100vw - 20px);
+    height: 50px;
+    border-radius:4px;
+    font-size: calc(10px + .3vw);
+    /*                box-shadow: 0px 0px 6px royalblue;*/
+    /*                box-shadow: 0px 0px 9px purple;*/
+    box-shadow: 0px 0px 11px darkgray;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%);
+}
+.s61w1{
+    display: flex;
+    flex-direction:column;
+    height: 100%;
+    width:2.2cm;
+    margin:1px !important;
+}
+.s61w1 img{
+    object-fit:cover;
+        height: 20px;
+    margin-left: 2px !important;
+}
+.s61w1 div{
+    height: 24px;
+    display: flex;
+    width:2.2cm;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+.s61k{
+    border-radius:5px;
+}
+.s61k:hover{
+    background-color: greenyellow !important;
+}
+.s61k:active{
+    background-color: yellowgreen !important;
+}
+#s61i{
+    display: flex;
+    flex-direction:column;
+    flex:1;
+}
+#s61i1{
+    display: flex;
+    justify-content: space-between;
+}
+#s61i1>*{
+    margin: 2px 4px;
+}
+#s61v{
+    color: red;
+     animation: viewer 2.5s infinite;
+}
+#s61s{
+    text-align: center;
+    margin: 2px;
+    font-size: 11px;
+    font-weight: 900;
+}
+#s61m{
+    display: flex;
+    flex:1;
+    flex-direction:row;
+    font-size: 12px;
+    height: 100%;
+    opacity: 1;
+    transition: opacity 1s;
+}
+#s61m.s61h{
+    opacity: 0;
+}
+#s61a{
+    max-width: 100%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+@keyframes viewer {
+  50% {text-shadow: 0px 0px 10px red;}
+}
+/*#s61n{
+    font-size: 13px;
+    font-weight: 900;
+}*/
+/*.s61c{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+   height: 24px;
+}*/
+.s61s{
+    /*flex-direction:column;*/
+    /*align-items: center;*/
+}
+/*#s61l{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 15px;
+    height: 15px;
+    background: greenyellow;
+    border-radius: 100%;
+    border: 2px solid forestgreen;
+}*/
+/*
+#s61v{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.s61c>span,#s61v>span{
+    flex:1;
+    text-align: center;
+}
+.s61o{
+    display: none !important;
+}
+.s61p{
+    width: 20px;
+    height: 20px;
+}*/
