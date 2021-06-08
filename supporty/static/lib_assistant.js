@@ -5,11 +5,11 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61w = s61Select("#s61w"), s61im = s61Select(s61w.dataset.i), s61ti = s61Select(s61w.dataset.t),
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
         s61Valid = s61Day > 70 && s61im !== null && s61ti !== null, s61ga = s61w.dataset.ga,
-        s61ls = localStorage, s61b = "/lib_assistant/supporty/", s61self = window.self.location.origin,
+        s61ls = localStorage, s61b = "/supporty/", s61self = window.self.location.origin,
         s61top = window.top.location.origin, s61Prefix = "S61-";
 //*** for test i must be uncommet below line
-//        s61r = s61w.dataset.basis,
-s61r = "http://localhost:8383",
+        s61r = s61w.dataset.base,
+//s61r = "http://localhost:8383",
         /*change my site in future*/s61y = "http://localhost:8383", s61url = location.pathname, s61hash = s61hashCode(s61url);
 function s61Select(e) {
     return document.querySelector(e);
@@ -43,7 +43,7 @@ function s61Init() {
     } else {
         console.log("else");
         //*** this link is for test in future it's replaced with s61w.dataset.sid + .json
-        fetch('/lib_assistant/json/supporters.json').then(function (r) {
+        fetch('/json/supporters.json').then(function (r) {
             //fetch('supporters.json').then(r => r.json()).then(j => s61cb(null, j)).catch(e => s61cb(e, null));
             return r.json();
         }).then(function (j) {
