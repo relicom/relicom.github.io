@@ -10,7 +10,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
 //*** for test i must be uncommet below line
         s61r = s61w.dataset.base,
 //s61r = "http://localhost:8383",
-        /*change my site in future*/s61y = "http://localhost:8383", s61url = location.pathname, s61hash = s61hashCode(s61url);
+        /*change my site in future*/s61y = "http://qwer", s61url = location.pathname, s61hash = s61hashCode(s61url);
 function s61Select(e) {
     return document.querySelector(e);
 }
@@ -318,7 +318,7 @@ function s61ShowArr(arr) {
         })
 }
 
-//console.log("condition", s61self, s61top, s61w.dataset.basis, s61Valid, s61self === s61top, window.top.frames.length, window.self.frames.length);
+console.log("condition", "s61self: " ,s61self, "s61top: ", s61top, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: " ,s61Valid, "s61self === s61top: ",s61self === s61top, "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
 //just to check is this library loaded in legal target site , this can to remove because admin could to change s61u by himself
 //*** i will be delete true conditon
 //var con = 3;
