@@ -539,7 +539,7 @@ if (window.top === window.self) {
                     }
                 }
             }
-            xhr.open("GET", "/supporty_template_rtl/json/crawled_item_list.json", true);
+            xhr.open("GET", "/json/crawled_item_list.json", true);
             xhr.send();
         }
         sitemapLinkCheckBt.onclick = function () {
