@@ -536,8 +536,8 @@ if (window.top === window.self) {
                 isDataOk = false;
                 console.log("isDateOk2 : ",isDataOk,search);
             } else {
-                siteId = search.get("siteid");
-                userId = search.get("userid");
+                siteId = Number(search.get("siteid"));
+                userId = Number(search.get("userid"));
                 token = search.get("token");
 //                    console.log("isDateOk4 : ",userId,siteId,token);
                 if (siteId && userId && token) {
