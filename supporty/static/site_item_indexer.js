@@ -1,6 +1,7 @@
+
 if (window.top === window.self) {
-    var body = g('body'), LINK_LIMIT = 2, o = location.pathname/*"http://localhost:8383"*/,
-            userId, siteId, token, titleSelector = "#titr", imgSelector = "#item-pic",
+    var body = g('body'), LINK_LIMIT = 2, o = location.origin, home = "http://qwer/",
+            userId, siteId, token, titleSelector, imgSelector, domain,
             fromLink = 0, toLink = 0, sendSeries = 0,
             storedLinks, itemCheckList = {}, linkObj = {}, linkArr = [], sitemapObj = {},
             selectorCheckLock = false, sendLock = false, linkLock = false, sitemapLock = false,
@@ -10,6 +11,7 @@ if (window.top === window.self) {
             registerReport = g("#register_report"), reportDiv = g("#report"),
             linkAcceptBt = g("#link_accept_bt"), linkTableParent = g('#link_table_parent'),
             selectorCheckBt = g("#selector_check_bt"), sendBt = g("#send_bt"),
+            MAX_URL_LEN = 200, MAX_TITLE_LEN = 100, MAX_IMG_URL_LEN = 250,
             txtArea = TLN.append_line_numbers('link_area'),
             sitemapFile = g("#sitemap_file"), sitemapDiv = g('#sitemap_div'),
             sitemapTable = g("#sitemap_table"), sitemapLinkListBt = g("#sitemap_link_list_bt"),
@@ -107,10 +109,13 @@ if (window.top === window.self) {
                     linkErrFn(" در خود فاصله دارد که غیر مجاز است", i);
                 } else if (e.split("://").length > 2) {
                     b = false;
-                    linkErrFn(" احتمالا بیشتر از یک لینک قرار دادید و باید هر خط تنهای یک لینک قرار گرفته باشد", i);
+                    linkErrFn(" احتمالا بیشتر از یک لینک قرار دادید و باید هر خط تنها یک لینک قرار گرفته باشد", i);
                 } else if ((u = getUrl(e)) === null) {
                     b = false;
                     linkErrFn(" ساختار آدرسش صحیح نیست", i);
+                } else if (decodeURI(u.pathname).length > MAX_URL_LEN) {
+                    b = false;
+                    linkErrFn(" حداکثر تعداد کاراکتر های آدرس محصول باید" + MAX_URL_LEN + " باشد ", i);
                 } else if (u.hash) {
                     b = false;
                     linkErrFn(" دارای پارامتر hash است که مجاز نیست", i);
@@ -184,7 +189,7 @@ if (window.top === window.self) {
             e = new URL(e).pathname;
             h = hashCode(e);
             s = 1;
-            linkObj["idx" + i] = {idx: i, link: e, hash: h, state: 1};
+            linkObj["idx" + i] = {idx: i, link: decodeURI(e), hash: h, state: 1};
         });
         setLinkTableBody();
     }
@@ -247,7 +252,7 @@ if (window.top === window.self) {
             hide(selectorCheckBt, 1);
             hide(sendBt, 0);
         } else if (z >= arr.length) {
-            report("بررسی و ثبت کلیه لینک ها به اتمام رسید اگر ثبت صفحه محصول دیگری ندارید حتما برای موارد امنیتی با استفاده از گزینه خروج از این صفحه خارج شوید");
+            report("بررسی و ثبت کلیه لینک ها به اتمام رسید اگر ثبت صفحه محصول دیگری ندارید حتما برای موارد امنیتی با استفاده از گزینه خروج از این صفحه خارج شوید", 1);
             hide(selectorCheckBt, 1);
             hide(sendBt, 1);
             hide(linkTableParent, 1);
@@ -351,15 +356,20 @@ if (window.top === window.self) {
                     linkObj[q].state = -3;
                     itemCheckListFn(q, -1);
                 } else {
-                    i = i.getAttribute("src").substring(3);
+                    //substring(3) cause of remove "NOT" phrase in first of image source link
+                    i = decodeURI(i.getAttribute("src").substring(3));
                     if (!i.toLowerCase().startsWith("http")) {
                         i = new URL(i, o + e.link.substring(0, e.link.lastIndexOf("/") + 1)).href;
                     }
                     h = document.createElement("img");
                     h.onload = function () {
-                        if (h.complete && h.naturalWidth > 0) {
+                        if (i.length > MAX_IMG_URL_LEN) {
+                            linkObj[q].state = -11;
+                            linkObj[q].img = null;
+                            itemCheckListFn(q, -1);
+                        } else if (h.complete && h.naturalWidth > 0) {
                             linkObj[q].state = 2;
-                            linkObj[q].title = t;
+                            linkObj[q].title = t.substring(0, MAX_TITLE_LEN);
                             linkObj[q].img = i;
                             itemCheckListFn(q, 1);
                         } else {
@@ -435,28 +445,33 @@ if (window.top === window.self) {
             }
         }
 
-        var req = {key: token, siteid: siteId, data: b64EncodeUnicode(JSON.stringify(array))};
+//        var req = {key: token, siteid: siteId, data: b64EncodeUnicode(JSON.stringify(array))};
+        var req = "userId=" + userId + "&siteId=" + siteId + "&token=" + token + "&list=" + JSON.stringify(array);
         hide(sendBt, 1);
         report("تا الان از " + arr.length + " لینک تعداد " + z + " لینک برای ثبت اقدام شده و تعداد " + (arr.length - z) + " لینک باقی مانده است تا رسیدن نتیجه ثبت منتظر باشید", 1, 1);
         console.log("send request: ", req);
-    }
-//*** this array (chArr) is used for checking registration state from server ,and just for test
-    var chArr1 = [[1, 3], [2, 4]];
-    var chArr2 = [[3, 4], [4, 3]];
-    var chArr3 = [[5, 3]];
-    function checkRegistrationState(arr) {
-        if (arr && arr.length > 0) {
-            arr.forEach(function (e) {
-                linkObj["idx" + e[0]].state = e[1];
-            });
-            setLinkTableBody(1);
-            sendLock = false;
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    responseCallback(xhr.responseText);
+                } else {
+                    report("متاسفانه اطلاعات مورد نظر ارسال نشد، بررسی کنید آیا اینترنت شما مشکلی ندارد و میتوانید پروفایل سایت خود را مشاهده کنید ؟ اگر بررسی شما نتیجه ای نداشت با پشتیبانی در میان بزارید تا کمک کنیم ", 0, 1);
+                }
+            }
         }
+        xhr.open("POST", "http://qwer/link/add_new_links", true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send(req);
     }
+
     function getLinkState(s) {
         switch (s) {
+            case 5:
+                return "طول عنوان صفحه محصول بیشتر از " + MAX_TITLE_LEN + " است و " + MAX_TITLE_LEN + " کاراکتر اول آن ثبت خواهد شد";
             case 4:
-                return "اینکه قبلا ثبت شده بود!";
+                return "احتمالا قبلا ثبت شده بود";
             case 3:
                 return "این لینک ثبت شد";
             case 2:
@@ -479,6 +494,13 @@ if (window.top === window.self) {
                 return "لینک باز نشد";
             case -8:
                 return "این لینک قبلا ثبت شده";
+            case -9:
+                return "طول آدرس صفحه محصول بیشتر از " + MAX_URL_LEN + " کاراکتر است";
+            case -11:
+                return "طول لینک عکس بیشتر از " + MAX_IMG_URL_LEN + " کاراکتر است";
+            case -12:
+                return "ثبت نشد ، اطلاعات مربوط به صفحه محصول ساختار مناسبی نداشت";
+
         }
     }
     g("#new_bt").onclick = reset;
@@ -529,12 +551,12 @@ if (window.top === window.self) {
         var search = location.search;
         if (search.length < 20) {
             isDataOk = false;
-            console.log("isDateOk1 : ",isDataOk,search);
+            console.log("isDateOk1 : ", isDataOk, search);
         } else {
             search = new URLSearchParams(search);
             if (!search) {
                 isDataOk = false;
-                console.log("isDateOk2 : ",isDataOk,search);
+                console.log("isDateOk2 : ", isDataOk, search);
             } else {
                 siteId = Number(search.get("siteid"));
                 userId = Number(search.get("userid"));
@@ -551,13 +573,13 @@ if (window.top === window.self) {
                                 report("متاسفانه نتوانستیم اطلاعات مورد نظر را دریافت کنیم، بررسی کنید که آیا شما ادمین سایت هستید و ورود به این صفحه از طریق داشبورد و منوی \"سایت های من\" بوده است ؟ آیا اینترنت شما مشکلی ندارد و میتوانید سایت ها را مشاهده کنید ؟ اگر بررسی شما نتیجه ای نداشت با پشتیبانی در میان بزارید تا کمک کنیم ", 0, 1);
                             }
                         }
-                    }
+                    };
                     xhr.open("POST", "http://qwer/link/check_token", true);
-                    xhr.setRequestHeader('Content-type', 'application/json');
-                    xhr.send(JSON.stringify({userId:userId,siteId:siteId,token: token}));
+                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhr.send("userId=" + userId + "&siteId=" + siteId + "&token=" + token);
                 } else {
                     isDataOk = false;
-                    console.log("isDateOk3 : ",isDataOk);
+                    console.log("isDateOk3 : ", isDataOk);
                 }
             }
         }
@@ -782,14 +804,47 @@ if (window.top === window.self) {
     }
     exitBt.onclick = function () {
         console.log("EXXXXXXXXXXXXXXXIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTT");
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var res = JSON.parse(xhr.responseText);
+                    if (res.status === 1) {
+                        setTimeout(function () {
+                            window.location.href = home + "/s/" + domain;
+                        }, 4000);
+                    }
+                    responseCallback(xhr.responseText);
+                } else {
+                    report("متاسفانه نتوانستیم اطلاعات مورد نظر را دریافت کنیم، بررسی کنید که آیا شما ادمین سایت هستید و ورود به این صفحه از طریق داشبورد و منوی \"سایت های من\" بوده است ؟ آیا اینترنت شما مشکلی ندارد و میتوانید سایت ها را مشاهده کنید ؟ اگر بررسی شما نتیجه ای نداشت با پشتیبانی در میان بزارید تا کمک کنیم ", 0, 1);
+                }
+            }
+        }
+        xhr.open("POST", "http://qwer/link/remove_token", true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send("userId=" + userId + "&siteId=" + siteId + "&token=" + token);
         //*** send request of exit of this page, token must be destroyed and not valid anymore
-        window.location.href = "http://go-to-home-page/"
+
     }
-    function setExistLinkList(param) {
-        reset();
-        storedLinks = param.linklist;
-        if (storedLinks) {
-            hide(sitemapControlDiv, 0);
+    function setExistLinkListAndSelectors(param) {
+        if (param.linklist && param.domain && param.imageSelector && param.titleSelector) {
+            domain = param.domain;
+            if (o.includes(domain)) {
+                reset();
+                storedLinks = JSON.parse(param.linklist);
+                if (storedLinks) {
+                    titleSelector = param.titleSelector;
+                    imgSelector = param.imageSelector;
+                    hide(sitemapControlDiv, 0);
+                    hide(g("#new_bt"), 0);
+                } else {
+                    report("لینک محصولات قبلی دریافت شده ساختار درستی نداشت", 0, 1);
+                }
+            } else {
+                report("این دامنه ثبت نشده", 0, 1);
+            }
+        } else {
+            report("اطلاعات دریافت شده کامل نمیباشد", 0, 1);
         }
     }
     function callFunction(funcName, param) {
@@ -805,9 +860,9 @@ if (window.top === window.self) {
                 }
                 if (data.msg) {
                     if (data.status == 1) {
-                        report(data.msg, 1, 0);
+                        report(data.msg, 1, 1);
                     } else {
-                        report(data.msg, 0, 0);
+                        report(data.msg, 0, 1);
                     }
                 }
                 if (data.param) {
@@ -823,8 +878,39 @@ if (window.top === window.self) {
             console.error(e);
         }
     }
-
     init();
+
+    //*** this array (chArr) is used for checking registration state from server ,and just for test
+//    var chArr1 = [[1, 3], [2, 4]];
+//    var chArr2 = [[3, 4], [4, 3]];
+//    var chArr3 = [[5, 3]];
+//    var chArr1 = [[1, -11], [2, 4]];
+//    var chArr2 = [[3, -9], [4, 3]];
+//    var chArr3 = [[5, -12]];
+//    function checkRegistrationState(arr) {
+//        if (arr && arr.length > 0) {
+//            arr.forEach(function (e) {
+//                linkObj["idx" + e[0]].state = e[1];
+//            });
+//            setLinkTableBody(1);
+//            sendLock = false;
+//        }
+//    }
+    function setSiteProductLinksState(param) {
+        param = param.result;
+        if (param && param.length > 0) {
+            var keys = Object.keys(linkObj);
+            param.forEach(function (e) {
+                keys.forEach(function (d) {
+                    if (linkObj[d].hash === e[0]) {
+                        linkObj[d].state = e[1];
+                    }
+                })
+            });
+            setLinkTableBody(1);
+            sendLock = false;
+        }
+    }
 } else {
     document.querySelector("html").innerHTML = "";
 }
