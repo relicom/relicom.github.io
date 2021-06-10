@@ -4,9 +4,9 @@
         <title>ثبت صفحات محصول</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link type="text/css" rel="stylesheet" href="/supporty/static/font_awesome_all.css">
-        <link type="text/css" rel="stylesheet" href="/supporty/static/toastify.css">
-        <link type="text/css" rel="stylesheet" href="/supporty/static/site_item_indexer.css">
+        <!--<link type="text/css" rel="stylesheet" href="css/font_awesome_all.css">-->
+        <!--<link type="text/css" rel="stylesheet" href="css/toastify.css">-->
+        <link type="text/css" rel="stylesheet" href="css/site_item_indexer.css">
     </head>
     <body>
         <div id="parent">
@@ -14,7 +14,7 @@
                 <div>
                     <span><b>ثبت صفحات محصول سایت توسط ادمین : </b></span>
                     <a href="#" target="_blank"><span class="button_ctr bggreen">راهنما</span></a>
-                    <span id="new_bt" class="button_ctr bgblue hide1">شروع دوباره</span>
+                    <span id="new_bt" class="button_ctr bgblue hide">شروع از اول</span>
                 </div>
             </div>
             <div id="body">
@@ -24,7 +24,7 @@
                     <p class="title">لیست لینک صفحات جهت بررسی و ثبت : </p>
                     <div class="table_wrapper switch_1">
                         <div class="table_div">
-                            <table class="table_1" id="ban_table">
+                            <table class="table_1">
                                 <thead>
                                     <tr class="fix_row">
                                         <th class="fix_column">شماره</th>
@@ -69,7 +69,7 @@ http://localhost:8383/supporty_template_rtl/sample_store/toshiba_hdd.html
                     <p class="title">لیست سایت مپ ها : </p>
                     <div id="sitemap_table" class="table_wrapper switch_1 hide">
                         <div class="table_div">
-                            <table class="table_1" id="ban_table">
+                            <table class="table_1">
                                 <thead>
                                     <tr class="fix_row">
                                         <th class="fix_column">شماره</th>
@@ -86,7 +86,8 @@ http://localhost:8383/supporty_template_rtl/sample_store/toshiba_hdd.html
                 </div>
                 
                 <div id="sitemap_control" class="m_30 hide">
-                    <p class="hint sitemap_ctr">اگر لینک سایت مپ یا فایل های آنرا دارید میتوانید لینک های سایت را لیست کنیم در غیر اینصورت میتونید لینک های صفحات محصول سایت را در بخش بعدی وارد کنید</p>
+                    <p class="hint sitemap_ctr">از سه طریق میتوانید لینک صفحات محصول را ثبت کنید از طریق لینک سایت مپ که روی سایت خودتان وجود دارد ، از طریق سایت مپ که بصورت فایل آنرا ارسال میکنید ، از طریق لیست لینک های صفحات محصول که بصورت دستی آنها را وارد میکنید</p>
+                    <!--<p class="hint sitemap_ctr">اگر لینک سایت مپ یا فایل های آنرا دارید میتوانید لینک های سایت را لیست کنیم در غیر اینصورت میتونید لینک های صفحات محصول سایت را در بخش بعدی وارد کنید</p>-->
                     <p class="hint sitemap_ctr">دقت کنید اگر از طریق لینک ، سایت مپ را وارد میکند و لینک صفحات در چندین سایت مپ قرار دارند ، لینک سایت مپ اصلی را وارد کنید</p>
                     <div class="sitemap_ctr">
                         <label for="sitemap_file">سایت مپ از طریق لینک : </label>
@@ -111,9 +112,15 @@ http://localhost:8383/supporty_template_rtl/sample_store/toshiba_hdd.html
             </div>
 
         </div>
-
-        <script src="/supporty/static/tln.js"></script>
-        <script src="/supporty/static/toastify.js"></script>
-        <script src="/supporty/static/site_item_indexer.js"></script>
+        
+<!--        <div id="password">
+            <div>
+                <p>در حال بررسی اطلاعات</p>
+            </div>
+        </div>-->
+        
+        <script src="js/tln.js"></script>
+        <!--<script src="js/toastify.js"></script>-->
+        <script src="js/site_item_indexer.js"></script>
     </body>
 </html>
