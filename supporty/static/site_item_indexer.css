@@ -1,9 +1,9 @@
-@font-face {
+/*@font-face {
     font-family: Vazir;
     src:url('../font/Vazir-Regular-UI.woff2') format('woff2');
     font-weight: lighter;
     font-display:swap;
-}
+}*/
 *{
     margin: 0;
     padding: 0;
@@ -164,6 +164,10 @@ td img{
 td button{
     margin:0 5px;
 }
+td:nth-child(2) {
+    max-width: 250px;
+    white-space: normal;
+}
 .tln-active, .tln-wrapper, .tln-line {
     margin: 0;
     border: 0;
@@ -275,5 +279,19 @@ td button{
     margin: 15px 0;
 }
 .hide{
-    display:none;
+    display:none !important;
+}
+#password{
+    width: 100vw;
+    height: 100vh;
+    /*background:red;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#password>div{
+    display: flex;
+    flex-direction: column;
+    /*background: aqua;*/
+    align-items:center;
 }
