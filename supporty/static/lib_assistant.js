@@ -4,13 +4,12 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61Day = Math.floor((new Date() * 1 - new Date(2021, 2, 21) * 1) / 86400000),
         s61w = s61Select("#s61w"), s61im = s61Select(s61w.dataset.i), s61ti = s61Select(s61w.dataset.t),
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
-        s61Valid = s61Day > 70 && s61im !== null && s61ti !== null, s61ga = s61w.dataset.ga,
-        s61ls = localStorage, s61b = "/supporty/", s61self = window.self.location.origin,
-        s61top = "http://123.abc"/*window.top.location.origin*/, s61Prefix = "S61-";
-//*** for test i must be uncommet below line
-        s61r = s61w.dataset.base,
-//s61r = "http://localhost:8383",
-        /*change my site in future*/s61y = "http://123.abc", s61url = location.pathname, s61hash = s61hashCode(s61url);
+        s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null), s61ga = s61w.dataset.ga,
+        s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-",
+        s61self = window.self.location.origin, s61top = window.top.location.origin,
+        s61SiteBase = s61w.dataset.base, s61url = location.pathname, s61hash = s61hashCode(s61url),
+        /*change my site in future*/s61Supporty = "http://qwer";
+
 function s61Select(e) {
     return document.querySelector(e);
 }
@@ -34,16 +33,16 @@ function s61Init() {
     document.head.appendChild(s61css);
 
     var s61t1 = Number(s61ls.getItem("s61s")), s61t2 = Number(s61ls.getItem("s61d")), s61t3 = new Date() * 1;
-    
+
     //*** in code of "s61t2 + 3000 > s61t3" I check if consultants state are 3 seconds old then needs to get new state, in future it must be increase to 3 minuets not 3 seconds of test
-    
+
     if ((s61t1 > 0 && s61t2 + 3000 > s61t3) || (s61t1 === -1 && s61t2 + (2 * 600) > s61t3) || (s61t1 === -2 && s61t2 + (24 * 600) > s61t3)) {
         console.log("if");
         s61OnlineOfflineState(null, JSON.parse(s61ls.getItem("s61j")));
     } else {
         console.log("else");
         //*** this link is for test in future it's replaced with s61w.dataset.sid + .json
-        fetch('/json/supporters.json').then(function (r) {
+        fetch('/lib_assistant/json/supporters.json').then(function (r) {
             //fetch('supporters.json').then(r => r.json()).then(j => s61cb(null, j)).catch(e => s61cb(e, null));
             return r.json();
         }).then(function (j) {
@@ -165,7 +164,7 @@ function s61SessionTracker() {
                 clearLs();
             }
         }
-        function clearLs(){
+        function clearLs() {
             s61ls.clear();
             location.reload();
         }
@@ -271,7 +270,7 @@ function s61SortArrayByNumber(numericIndex, arr, isAsc) {
 
 //*** just for test it's will be removed in production stage
 setTimeout(function () {
-    s61VisitStatistics();
+//    s61VisitStatistics();
 }, 3000);
 
 function s61VisitStatistics() {
@@ -303,7 +302,7 @@ function s61VisitStatistics() {
     }
     arr = s61SortArrayByNumber(4, arr);
     arr = arr.slice(0, 100);
-            s61ShowArr(arr);
+    s61ShowArr(arr);
     return arr;
 }
 
@@ -317,33 +316,54 @@ function s61ShowArr(arr) {
             console.log(idx, item);
         })
 }
+function s61ChangeAnchorTarget() {
+    document.querySelectorAll("a").forEach(function (i) {
+        i.setAttribute('target', '_self');
+    });
+}
 
-console.log("condition", "s61self: " ,s61self, "s61top: ", s61top, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: " ,s61Valid, "s61self === s61top: ",s61self === s61top, "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
-//just to check is this library loaded in legal target site , this can to remove because admin could to change s61u by himself
-//*** i will be delete true conditon
-//var con = 3;
-if (s61self === s61r) {//true || 
-    //*** user is in live page and url of self and top related to target site
-    var b1 = s61self === s61top && s61top === s61r;
-    //*** user is in profile page and url of itself is related to target site and url of top related to supporty.com
-    var b2 = s61self !== s61top && s61top === s61y;
-    console.log("is top===self?", window.top === window.self, "b1 ", b1, " b2 ", b2, " s61self ", s61self, " s61top ", s61top, " s61r ", s61r, " s61y ", s61y, " s61top === s61y ", s61top === s61y);
+console.log("condition", "s61self: ", s61self, "s61top: ", s61top, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: ", s61Valid, "s61self === s61top: ", s61self === s61top, "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
+//****just to check is this library loaded in legal target site
+if (s61self === s61SiteBase) {//true ||
+
+    //*** user opened site in self origin without iframe, so s61SessionTracker() and s61Init() are called
+    // this condition will be implemented in }else{ } section
+
+    //*** user is in live page and url of self and top related to target site, so s61SessionTracker() and s61Init() MUST BE NOT call
+    var b1 = s61self === s61top && s61top === s61SiteBase;
+    //*** user is in profile page and url of itself is related to target site and url of top related to supporty.com, so s61SessionTracker() called but s61Init() must be not called
+    var b2 = s61self !== s61top && s61top === s61Supporty;
+    console.log("is top===self?", window.top === window.self, "b1 ", b1, " b2 ", b2, " s61self ", s61self, " s61top ", s61top, " s61r ", s61SiteBase, " s61y ", s61Supporty, " s61top === s61y ", s61top === s61Supporty);
+
+//    if (b1) {
+//        s61Deactive();
+//        s61ChangeAnchorTarget();
+//    } else if (b2) {
+//        s61Deactive();
+//        s61ChangeAnchorTarget();
+//        s61SessionTracker();
+//        s61SiteBase = s61Supporty;
+//    }else{
+//        s61SessionTracker();
+//        s61Init();
+//    }
+
     if (window.top !== window.self && (b1 || b2)) {// && window.top.frames.length > 0   con === 1 || 
         console.log("if condition was true");
         s61Deactive();
-        s61ch();
+        s61ChangeAnchorTarget();
         if (b2) {
             //*** after
             s61SessionTracker();
-            s61r = s61y;
+            s61SiteBase = s61Supporty;
         }
         function pm(e) {
             //*** i comment it because postmessage and receiver are in same origin and makes infinity message loop
-            window.top.postMessage(e, s61r);
+            window.top.postMessage(e, s61SiteBase);
         }
         window.addEventListener('message', function (e) {
             console.log("lib_assistant message", "data: ", e.data, "origin: ", e.origin);
-            if (e.origin === s61r) { //*** change origin url to my site
+            if (e.origin === s61SiteBase) { //*** change origin url to my site
                 e = e.data;
                 //*** maybe not required because in any page load i send it immediately
                 if (e.c === "url") {
@@ -367,15 +387,8 @@ if (s61self === s61r) {//true ||
         s61SessionTracker();
         s61Init();
     }
-    function s61ch() {
-//        alert("s61ch");
-        document.querySelectorAll("a").forEach(function (i) {
-            i.setAttribute('target', '_self');
-        });
-    }
-}
-else {
-//*** this library not used in proper target site
-    console.log("library is read");
+
+} else {
+    console.log("library is not related to site");
 }
 //})
