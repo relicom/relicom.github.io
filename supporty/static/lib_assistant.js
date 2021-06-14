@@ -42,7 +42,7 @@ function s61Init() {
     } else {
         console.log("else");
         //*** this link is for test in future it's replaced with s61w.dataset.sid + .json
-        fetch('/lib_assistant/json/supporters.json').then(function (r) {
+        fetch('/json/supporters.json').then(function (r) {
             //fetch('supporters.json').then(r => r.json()).then(j => s61cb(null, j)).catch(e => s61cb(e, null));
             return r.json();
         }).then(function (j) {
