@@ -10,7 +10,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61SiteBase = s61w.dataset.base, /*change my site in future*/s61Supporty = "http://qwer";
 //DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
 //var s61top = window.top.location.origin;
-
+console.log("window.top.location.href:",window.top.location.href);
 function s61Select(e) {
     return document.querySelector(e);
 }
