@@ -104,7 +104,7 @@ function s61Init() {
                 s61v.textContent = "لایو با " + r[5] + " بیننده";
             } else {
                 s61s.textContent = "الان لایو نیستم اینجا یک نگاه به ساعت برنامه هام بنداز";
-                s61Hide(s61v, 1);
+                s61Hide(s61v);
             }
             s61m.dataset.i = r[1];
             s61a.src = s61b + "karshenas/pic_" + r[2] + ".jpg";
