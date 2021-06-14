@@ -56,7 +56,10 @@ function s61Init() {
         });
     }
     function s61OnlineOfflineState(e, j) {
-        console.log(s61OnlineOfflineState.name, e, j, j.status);
+        console.log(s61OnlineOfflineState.name, e, j);
+        if(j){
+             console.log(j.status);
+        }
         if (j && !e) {
             s61Hide(s61m, 1);
             if (j.status < 0) {
