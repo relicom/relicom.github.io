@@ -5,7 +5,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61w = s61Select("#s61w"), s61im = s61Select(s61w.dataset.i), s61ti = s61Select(s61w.dataset.t),
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
         s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null), s61ga = s61w.dataset.ga,
-        s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-",//s61b = "/lib_assistant/supporty/"
+        s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-", //s61b = "/lib_assistant/supporty/"
         s61self = window.self.location.origin, s61url = location.pathname, s61hash = s61hashCode(s61url),
         s61SiteBase = s61w.dataset.base, /*change my site in future*/s61Supporty = "http://qwer";
 //DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
@@ -327,35 +327,12 @@ function s61ChangeAnchorTarget() {
 }
 
 //console.log("condition", "s61self: ", s61self, "s61top: ", s61top, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: ", s61Valid, "s61self === s61top: ", s61self === s61top, "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
-console.log("condition","------------", "s61self: ", s61self, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: ", s61Valid,  "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
+console.log("condition", "------------", "s61self: ", s61self, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: ", s61Valid, "window.self.frames.length: ", window.self.frames.length);
 
 //****just to check is this library loaded in legal target site
 if (s61self === s61SiteBase) {//true ||
-console.log("window.top :",window.top ,"window.self:",window.self,"window.top === window.self:",window.top === window.self," window.top.frames.length:", window.top.frames.length);
-    var isSameOrigin = window.top === window.self;
-    var isInIframe = window.top.frames.length > 0
-    //*** user opened site in self origin without iframe, so s61SessionTracker() and s61Init() are called
-    // this condition will be implemented in }else{ } section
-    var inNormal = isSameOrigin && !isInIframe;
-    //*** user is in live page and url of self and top related to target site, so s61SessionTracker() and s61Init() MUST BE NOT call
-    var inLive = isSameOrigin && isInIframe;
-//    var inLive = s61self === s61top && s61top === s61SiteBase;
-    //*** user is in profile page and url of itself is related to target site and url of top related to supporty.com, so s61SessionTracker() called but s61Init() must be not called
-    var inProfile = !isSameOrigin && isInIframe;
-//    var inProfile = s61self !== s61top && s61top === s61Supporty;
-
-//    console.log("is top===self?", window.top === window.self, "b1 ", inLive, " b2 ", inProfile, " s61self ", s61self, " s61top ", s61top, " s61r ", s61SiteBase, " s61y ", s61Supporty, " s61top === s61y ", s61top === s61Supporty);
-
-    if (inNormal) {
-        s61SessionTracker();
-        s61Init();
-    } else if (inLive || inProfile) {
-        s61Deactive();
-        s61ChangeAnchorTarget();
-        s61SessionTracker();
-        if (inProfile) {
-            s61SiteBase = s61Supporty;
-        }
+    console.log("window.top :", window.top, "window.self:", window.self, "window.top === window.self:", window.top === window.self);
+    function setMessaging() {
         function pm(e) {
             //*** i comment it because postmessage and receiver are in same origin and makes infinity message loop
             window.top.postMessage(e, s61SiteBase);
@@ -378,6 +355,40 @@ console.log("window.top :",window.top ,"window.self:",window.self,"window.top ==
         } else {
             pm({c: "url", isvalid: s61Valid});
         }
+    }
+    var isSameOrigin = window.top === window.self;
+//var isInIframe = window.top.frames.length > 0
+    //*** user opened site in self origin without iframe, so s61SessionTracker() and s61Init() are called
+    // this condition will be implemented in }else{ } section
+//    var inNormal = isSameOrigin && !isInIframe;
+    //*** user is in live page and url of self and top related to target site, so s61SessionTracker() and s61Init() MUST BE NOT call
+//    var inLive = isSameOrigin && isInIframe;
+//    var inLive = s61self === s61top && s61top === s61SiteBase;
+    //*** user is in profile page and url of itself is related to target site and url of top related to supporty.com, so s61SessionTracker() called but s61Init() must be not called
+//    var inProfile = !isSameOrigin && isInIframe;
+//    var inProfile = s61self !== s61top && s61top === s61Supporty;
+
+//    console.log("is top===self?", window.top === window.self, "b1 ", inLive, " b2 ", inProfile, " s61self ", s61self, " s61top ", s61top, " s61r ", s61SiteBase, " s61y ", s61Supporty, " s61top === s61y ", s61top === s61Supporty);
+
+//    if (inNormal || inLive) {
+    if (isSameOrigin) {
+        var isInIframe = window.top.frames.length > 0
+        if (isInIframe) {
+            s61Deactive();
+            s61ChangeAnchorTarget();
+            s61SessionTracker();
+            setMessaging();
+        } else {
+            s61SessionTracker();
+            s61Init();
+        }
+//    } else if (inProfile) {
+    } else {
+        s61Deactive();
+        s61ChangeAnchorTarget();
+        s61SessionTracker();
+        s61SiteBase = s61Supporty;
+        setMessaging()
 
 //    } else if (inProfile) {
 //        s61Deactive();
