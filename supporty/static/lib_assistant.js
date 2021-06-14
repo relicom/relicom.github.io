@@ -6,9 +6,10 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
         s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null), s61ga = s61w.dataset.ga,
         s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-",
-        s61self = window.self.location.origin, s61top = window.top.location.origin,
-        s61SiteBase = s61w.dataset.base, s61url = location.pathname, s61hash = s61hashCode(s61url),
-        /*change my site in future*/s61Supporty = "http://qwer";
+        s61self = window.self.location.origin, s61url = location.pathname, s61hash = s61hashCode(s61url),
+        s61SiteBase = s61w.dataset.base, /*change my site in future*/s61Supporty = "http://qwer";
+//DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
+//var s61top = window.top.location.origin;
 
 function s61Select(e) {
     return document.querySelector(e);
@@ -57,8 +58,8 @@ function s61Init() {
     }
     function s61OnlineOfflineState(e, j) {
         console.log(s61OnlineOfflineState.name, e, j);
-        if(j){
-             console.log(j.status);
+        if (j) {
+            console.log(j.status);
         }
         if (j && !e) {
             s61Hide(s61m, 1);
@@ -72,10 +73,10 @@ function s61Init() {
                     s61LiveState(l[c++]);
                     s61m.onmouseenter = s61m.onmouseleave = function (e) {
                         s61p = e.type === "mouseleave" ? 1 : 0;
-                        console.log("mouse event : ", e, e.type, s61p);
+//                        console.log("mouse event : ", e, e.type, s61p);
                     };
                     s61m.onclick = function (e) {
-                        console.log("s61mcc clicked");
+//                        console.log("s61mcc clicked");
                         window.open(s61Select("#s61t").href, '_blank');
                     };
                     if (l.length > 1) {
@@ -329,35 +330,28 @@ console.log("condition", "s61self: ", s61self, "s61top: ", s61top, "s61w.dataset
 //****just to check is this library loaded in legal target site
 if (s61self === s61SiteBase) {//true ||
 
+    var isSameOrigin = window.top === window.self;
+    var isInIframe = window.top.frames.length > 0
     //*** user opened site in self origin without iframe, so s61SessionTracker() and s61Init() are called
     // this condition will be implemented in }else{ } section
-
+    var inNormal = isSameOrigin && !isInIframe;
     //*** user is in live page and url of self and top related to target site, so s61SessionTracker() and s61Init() MUST BE NOT call
-    var b1 = s61self === s61top && s61top === s61SiteBase;
+    var inLive = isSameOrigin && isInIframe;
+//    var inLive = s61self === s61top && s61top === s61SiteBase;
     //*** user is in profile page and url of itself is related to target site and url of top related to supporty.com, so s61SessionTracker() called but s61Init() must be not called
-    var b2 = s61self !== s61top && s61top === s61Supporty;
-    console.log("is top===self?", window.top === window.self, "b1 ", b1, " b2 ", b2, " s61self ", s61self, " s61top ", s61top, " s61r ", s61SiteBase, " s61y ", s61Supporty, " s61top === s61y ", s61top === s61Supporty);
+    var inProfile = !isSameOrigin && isInIframe;
+//    var inProfile = s61self !== s61top && s61top === s61Supporty;
 
-//    if (b1) {
-//        s61Deactive();
-//        s61ChangeAnchorTarget();
-//    } else if (b2) {
-//        s61Deactive();
-//        s61ChangeAnchorTarget();
-//        s61SessionTracker();
-//        s61SiteBase = s61Supporty;
-//    }else{
-//        s61SessionTracker();
-//        s61Init();
-//    }
+    console.log("is top===self?", window.top === window.self, "b1 ", inLive, " b2 ", inProfile, " s61self ", s61self, " s61top ", s61top, " s61r ", s61SiteBase, " s61y ", s61Supporty, " s61top === s61y ", s61top === s61Supporty);
 
-    if (window.top !== window.self && (b1 || b2)) {// && window.top.frames.length > 0   con === 1 || 
-        console.log("if condition was true");
+    if (inNormal) {
+        s61SessionTracker();
+        s61Init();
+    } else if (inLive || inProfile) {
         s61Deactive();
         s61ChangeAnchorTarget();
-        if (b2) {
-            //*** after
-            s61SessionTracker();
+        s61SessionTracker();
+        if (inProfile) {
             s61SiteBase = s61Supporty;
         }
         function pm(e) {
@@ -383,14 +377,52 @@ if (s61self === s61SiteBase) {//true ||
             pm({c: "url", isvalid: s61Valid});
         }
 
-
-    } else {
-        //*** user is in target site without iframe
-        //*** after 
-        s61SessionTracker();
-        s61Init();
+//    } else if (inProfile) {
+//        s61Deactive();
+//        s61ChangeAnchorTarget();
+//        s61SessionTracker();
     }
 
+//    if (window.top !== window.self && (inLive || inProfile)) {// && window.top.frames.length > 0   con === 1 || 
+//        console.log("if condition was true");
+//        s61Deactive();
+//        s61ChangeAnchorTarget();
+//        if (inProfile) {
+//            //*** after
+//            s61SessionTracker();
+//            s61SiteBase = s61Supporty;
+//        }
+//        function pm(e) {
+//            //*** i comment it because postmessage and receiver are in same origin and makes infinity message loop
+//            window.top.postMessage(e, s61SiteBase);
+//        }
+//        window.addEventListener('message', function (e) {
+//            console.log("lib_assistant message", "data: ", e.data, "origin: ", e.origin);
+//            if (e.origin === s61SiteBase) { //*** change origin url to my site
+//                e = e.data;
+//                //*** maybe not required because in any page load i send it immediately
+//                if (e.c === "url") {
+//                    pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, numid: s61numid, img: s61im.src, hash: s61hash, b64: s61ProductDetail()});
+//                } else if (e.c === "ga" && s61ga) {
+////https://developers.google.com/analytics/devguides/collection/analyticsjs/cross-domain#iframes
+//                    ga('create', s61ga, 'auto', {clientId: e.gacid})
+//                }
+//            }
+//        });
+//        if (s61Valid) {
+//            pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, numid: s61numid, img: s61im.src, hash: s61hash, b64: s61ProductDetail()});
+//        } else {
+//            pm({c: "url", isvalid: s61Valid});
+//        }
+//
+//
+//    } else {
+//        //*** user is in target site without iframe
+//        //*** after 
+//        s61SessionTracker();
+//        s61Init();
+//    }
+//
 } else {
     console.log("library is not related to site");
 }
