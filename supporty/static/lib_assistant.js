@@ -6,7 +6,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
         s61Valid = s61Day > 70 && s61im !== null && s61ti !== null, s61ga = s61w.dataset.ga,
         s61ls = localStorage, s61b = "/supporty/", s61self = window.self.location.origin,
-        s61top = "http://123.abc"/*window.top.location.origin*/, s61Prefix = "S61-";
+        s61top = "http://qwer"/*window.top.location.origin*/, s61Prefix = "S61-";
 //*** for test i must be uncommet below line
         s61r = s61w.dataset.base,
 //s61r = "http://localhost:8383",
@@ -322,7 +322,7 @@ console.log("condition", "s61self: " ,s61self, "s61top: ", s61top, "s61w.dataset
 //just to check is this library loaded in legal target site , this can to remove because admin could to change s61u by himself
 //*** i will be delete true conditon
 //var con = 3;
-if (true || s61self === s61r) {
+if (s61self === s61r) {//true || 
     //*** user is in live page and url of self and top related to target site
     var b1 = s61self === s61top && s61top === s61r;
     //*** user is in profile page and url of itself is related to target site and url of top related to supporty.com
