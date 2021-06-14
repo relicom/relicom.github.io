@@ -331,7 +331,9 @@ console.log("condition", "------------", "s61self: ", s61self, "s61w.dataset.bas
 
 //****just to check is this library loaded in legal target site
 if (s61self === s61SiteBase) {//true ||
-    console.log("window.top :", window.top, "window.self:", window.self, "window.top === window.self:", window.top === window.self);
+    console.log("window.self:", window.self);
+    console.log("window.top :", window.top);
+    console.log("window.top === window.self:", window.top === window.self);
     function setMessaging() {
         function pm(e) {
             //*** i comment it because postmessage and receiver are in same origin and makes infinity message loop
