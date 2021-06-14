@@ -6,7 +6,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
         s61Valid = s61Day > 70 && s61im !== null && s61ti !== null, s61ga = s61w.dataset.ga,
         s61ls = localStorage, s61b = "/supporty/", s61self = window.self.location.origin,
-        s61top = "http://qwer"/*window.top.location.origin*/, s61Prefix = "S61-";
+        s61top = "http://123.abc"/*window.top.location.origin*/, s61Prefix = "S61-";
 //*** for test i must be uncommet below line
         s61r = s61w.dataset.base,
 //s61r = "http://localhost:8383",
