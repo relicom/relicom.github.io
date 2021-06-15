@@ -512,39 +512,40 @@ if (window.top === window.self) {
         } else if (sendLock) {
             report('درخواست ثبت ارسال شده لطفا صبر کنید تا جواب ثبت لینک ها دریافت شود', 1, 0);
         } else {
-            report(0, 0, 1);
-
-            storedLinks = null;
-            linkArr = [];
-            itemCheckList = {};
-            linkObj = {};
-            sitemapObj = {};
-
-            fromLink = 0;
-            toLink = 0;
-            sendSeries = 0;
-
-            sitemapLock = false;
-            linkLock = false;
-            selectorCheckLock = false;
-            sendLock = false;
-
-            hide(linkTableParent, 1);
-            hide(textareaDiv, 1);
-            hide(linkControlDiv, 1);
-            hide(linkAcceptBt, 1);
-            hide(sitemapLinkListBt, 1);
-            hide(linkCheckBt, 1);
-            hide(sitemapDiv, 1);
-            hide(sitemapCtrClass, 0);
-            hide(exitBt, 1);
-
-            linkTableBody.innerHTML = "";
-            sitemapTableBody.innerHTML = "";
-//        *** for test i need inside links
-//        linkArea.value = "";
-            sitemapFile.value = "";
-            linkArea.readOnly = false;
+//            report(0, 0, 1);
+//            
+//            storedLinks = null;
+//            linkArr = [];
+//            itemCheckList = {};
+//            linkObj = {};
+//            sitemapObj = {};
+//
+//            fromLink = 0;
+//            toLink = 0;
+//            sendSeries = 0;
+//
+//            sitemapLock = false;
+//            linkLock = false;
+//            selectorCheckLock = false;
+//            sendLock = false;
+//
+//            hide(linkTableParent, 1);
+//            hide(textareaDiv, 1);
+//            hide(linkControlDiv, 1);
+//            hide(linkAcceptBt, 1);
+//            hide(sitemapLinkListBt, 1);
+//            hide(linkCheckBt, 1);
+//            hide(sitemapDiv, 1);
+//            hide(sitemapCtrClass, 0);
+//            hide(exitBt, 1);
+//
+//            linkTableBody.innerHTML = "";
+//            sitemapTableBody.innerHTML = "";
+////        *** for test i need inside links
+////        linkArea.value = "";
+//            sitemapFile.value = "";
+//            linkArea.readOnly = false;
+location.reload();
         }
     }
     function init() {
