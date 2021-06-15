@@ -503,7 +503,7 @@ if (window.top === window.self) {
 
         }
     }
-    g("#new_bt").onclick = location.reload();
+    g("#new_bt").onclick = function(){location.reload()};
     function reset() {
         if (selectorCheckLock) {
             report("در حال بررسی لینک ها برای بررسی عنوان ها و عکس های صفحات محصول میباشد لطفا تا پایان عملیات صبر کنید", 1, 0);
