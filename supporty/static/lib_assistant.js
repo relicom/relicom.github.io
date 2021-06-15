@@ -7,7 +7,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null), s61ga = s61w.dataset.ga,
         s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-", //s61b = "/lib_assistant/supporty/"
         s61self = window.self.location.origin, s61url = location.pathname, s61hash = s61hashCode(s61url),
-        s61SiteBase = s61w.dataset.base, /*change my site in future*/s61Supporty = "http://123.abc";
+        s61SiteBase = s61w.dataset.base, /*change my site in future*/s61Supporty = "http://qwer";
 //DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
 //var s61top = window.top.location.origin;
 
