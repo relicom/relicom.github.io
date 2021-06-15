@@ -544,6 +544,7 @@ if (window.top === window.self) {
 //        *** for test i need inside links
 //        linkArea.value = "";
             sitemapFile.value = "";
+            linkArea.readOnly = false;
         }
     }
     function init() {
