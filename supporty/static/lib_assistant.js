@@ -2,14 +2,24 @@
 
 var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}), 
         s61Day = Math.floor((new Date() * 1 - new Date(2021, 2, 21) * 1) / 86400000),
-        s61w = s61Select("#s61w"), s61im = s61Select(s61w.dataset.i), s61ti = s61Select(s61w.dataset.t),
-        s61ti = (s61ti !== null ? s61ti.textContent.trim() : null), s61numid = Number(s61w.dataset.numid),
-        s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null), s61ga = s61w.dataset.ga,
-        s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-", //s61b = "/lib_assistant/supporty/"
-        s61self = window.self.location.origin, s61url = location.pathname, s61hash = s61hashCode(s61url),
-        s61SiteBase = s61w.dataset.base, /*change my site in future*/s61Supporty = "http://qwer";
+        s61w = s61Select("#s61w"), s61numid = -1, // Number(s61w.dataset.numid),
+        s61im = s61Select(s61w.dataset.i), s61ti = s61Select(s61w.dataset.t),
+        s61SiteBase = s61w.dataset.baseurl, s61ga = s61w.dataset.ga, s61Domain = s61w.dataset.domain,
+        s61ti = (s61ti !== null ? s61ti.textContent.trim() : null),
+        s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null),
+        s61ls = localStorage, s61b = "/supporty/", s61Prefix = "S61-",
+        s61self = window.self.location.origin, s61url = location.pathname,
+        s61Check = '/json/supporters.json', s61hash = s61hashCode(s61url),
+        /*change my site in future*/s61Supporty = "http://qwer";
+
 //DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
 //var s61top = window.top.location.origin;
+function localTest() {
+    s61b = "/lib_assistant/supporty/";
+    s61Check = '/lib_assistant/json/supporters.json'
+    s61SiteBase = "http://localhost:8383";
+}
+// localTest();
 
 function s61Select(e) {
     return document.querySelector(e);
@@ -33,36 +43,44 @@ function s61Init() {
     s61css.href = s61b + "static/lib_assistant.css";
     document.head.appendChild(s61css);
 
-    var s61t1 = Number(s61ls.getItem("s61s")), s61t2 = Number(s61ls.getItem("s61d")), s61t3 = new Date() * 1;
+    var s61Status = Number(s61ls.getItem("s61s")), s61Time = Number(s61ls.getItem("s61t")), s61Dration = Number(s61ls.getItem("s61d")), s61Now = new Date() * 1;
 
-    //*** in code of "s61t2 + 3000 > s61t3" I check if consultants state are 3 seconds old then needs to get new state, in future it must be increase to 3 minuets not 3 seconds of test
-
-    if ((s61t1 > 0 && s61t2 + 3000 > s61t3) || (s61t1 === -1 && s61t2 + (2 * 600) > s61t3) || (s61t1 === -2 && s61t2 + (24 * 600) > s61t3)) {
+//*** in code of "s61t2 + 3000 > s61t3" I check if consultants state are 3 seconds old then needs to get new state, in future it must be increase to 3 minuets not 3 seconds of test
+//    if ((s61Status > 0 && s61Time + 3000 > s61t3) || (s61Status === -1 && s61Time + (2 * 600) > s61t3) || (s61Status === -2 && s61Time + (24 * 600) > s61t3)) {
+    if ((s61Time + s61Dration) > s61Now) {
         console.log("if");
-        s61OnlineOfflineState(null, JSON.parse(s61ls.getItem("s61j")));
+        s61OnlineOfflineState(JSON.parse(s61ls.getItem("s61j")));
     } else {
         console.log("else");
         //*** this link is for test in future it's replaced with s61w.dataset.sid + .json
-        fetch('/json/supporters.json').then(function (r) {///lib_assistant
+        fetch(s61Check).then(function (r) {///lib_assistant
             //fetch('supporters.json').then(r => r.json()).then(j => s61cb(null, j)).catch(e => s61cb(e, null));
             return r.json();
         }).then(function (j) {
 //            console.log("j", j);
-            s61ls.setItem("s61d", s61t3);
+            s61ls.setItem("s61t", s61Now);
+            s61ls.setItem("s61d", j.duration);
             s61ls.setItem("s61j", JSON.stringify(j));
             s61ls.setItem("s61s", j.status);
-            s61OnlineOfflineState(null, j)
+            s61ls.setItem("s61sid", j.sid);
+            s61OnlineOfflineState(j)
         }).catch(function (e) {
-            s61OnlineOfflineState(e, null)
+            console.error("دیتا دریافت نشد", e);
         });
     }
-    function s61OnlineOfflineState(e, j) {
-        console.log(s61OnlineOfflineState.name, e, j);
+    function s61OnlineOfflineState(j) {
+        console.log(s61OnlineOfflineState.name, j);
         if (j) {
-            console.log(j.status);
-        }
-        if (j && !e) {
             s61Hide(s61m, 1);
+            s61numid = j.sid;
+            if (s61Valid && s61numid > 0) {
+                var s61e = s61Select("#s61e");
+                s61Hide(s61e, 1);
+                s61e.onclick = function () {
+                    window.open('http://qwer/external/favorite?p=' + s61ProductDetail(),
+                            'addfav', 'height=600,width=500,status=no,menubar=no,toolbar=no');
+                }
+            }
             if (j.status < 0) {
                 s61Hide(s61a);
                 s61Hide(s61v);
@@ -91,8 +109,6 @@ function s61Init() {
                     }
                 }
             }
-        } else {
-            console.log("دیتا دریافت نشد");
         }
     }
     function s61LiveState(r) {
@@ -124,19 +140,19 @@ function s61Init() {
 //            return String.fromCharCode('0x' + p1);
 //        }))
 //    }
-    if (s61Valid) {
-        var s61e = s61Select("#s61e");
-        s61Hide(s61e, 1);
-        s61e.onclick = function () {
-            console.log("s61ecc clicked");
-            //*** change target url
-//            var b64 = b64EncodeUnicode('{"link":"' + location.origin + location.pathname + '","hash":' + s61hash + ',"title":"' + s61ti + '","numid":' + s61numid + '}');
-//            window.open('http://localhost:8383/supporty_template_rtl/motherpage_home.html?p=' + b64 + '#external_favorite',
-//                    'addfav', 'height=500,width=500,status=no,menubar=no,toolbar=no');
-            window.open('http://qwer/external/favorite?p=' + s61ProductDetail(),
-                    'addfav', 'height=600,width=500,status=no,menubar=no,toolbar=no');
-        }
-    }
+//    if (s61Valid) {
+//        var s61e = s61Select("#s61e");
+//        s61Hide(s61e, 1);
+//        s61e.onclick = function () {
+//            console.log("s61ecc clicked");
+//            //*** change target url
+////            var b64 = b64EncodeUnicode('{"link":"' + location.origin + location.pathname + '","hash":' + s61hash + ',"title":"' + s61ti + '","numid":' + s61numid + '}');
+////            window.open('http://localhost:8383/supporty_template_rtl/motherpage_home.html?p=' + b64 + '#external_favorite',
+////                    'addfav', 'height=500,width=500,status=no,menubar=no,toolbar=no');
+//            window.open('http://qwer/external/favorite?p=' + s61ProductDetail(),
+//                    'addfav', 'height=600,width=500,status=no,menubar=no,toolbar=no');
+//        }
+//    }
 }
 
 function s61SessionTracker() {
@@ -326,8 +342,8 @@ function s61ChangeAnchorTarget() {
     });
 }
 
-//console.log("condition", "s61self: ", s61self, "s61top: ", s61top, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: ", s61Valid, "s61self === s61top: ", s61self === s61top, "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
-console.log("condition", "------------", "s61self: ", s61self, "s61w.dataset.base: ", s61w.dataset.base, "s61Valid: ", s61Valid, "window.self.frames.length: ", window.self.frames.length);
+//console.log("condition", "s61self: ", s61self, "s61top: ", s61top, "s61w.dataset.base: ", s61SiteBase, "s61Valid: ", s61Valid, "s61self === s61top: ", s61self === s61top, "window.top.frames.length: ", window.top.frames.length, "window.self.frames.length: ", window.self.frames.length);
+console.log("condition", "------------", "s61self: ", s61self, "s61SiteBase: ", s61SiteBase, "s61Valid: ", s61Valid, "window.self.frames.length: ", window.self.frames.length);
 
 //****just to check is this library loaded in legal target site
 if (s61self === s61SiteBase) {//true ||
@@ -345,7 +361,8 @@ if (s61self === s61SiteBase) {//true ||
                 e = e.data;
                 //*** maybe not required because in any page load i send it immediately
                 if (e.c === "url") {
-                    pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, numid: s61numid, img: s61im.src, hash: s61hash, b64: s61ProductDetail()});
+//                    pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, numid: s61numid, img: s61im.src, hash: s61hash, b64: s61ProductDetail()});
+                    pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, img: s61im.src, hash: s61hash});//, b64: s61ProductDetail()
                 } else if (e.c === "ga" && s61ga) {
 //https://developers.google.com/analytics/devguides/collection/analyticsjs/cross-domain#iframes
                     ga('create', s61ga, 'auto', {clientId: e.gacid})
@@ -353,7 +370,8 @@ if (s61self === s61SiteBase) {//true ||
             }
         });
         if (s61Valid) {
-            pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, numid: s61numid, img: s61im.src, hash: s61hash, b64: s61ProductDetail()});
+//            pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, numid: s61numid, img: s61im.src, hash: s61hash, b64: s61ProductDetail()});
+            pm({c: "url", isvalid: s61Valid, host: location.origin, path: location.pathname, title: s61ti, img: s61im.src, hash: s61hash});//, b64: s61ProductDetail()
         } else {
             pm({c: "url", isvalid: s61Valid});
         }
