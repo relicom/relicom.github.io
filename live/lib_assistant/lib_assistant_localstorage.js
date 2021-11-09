@@ -20,7 +20,7 @@ function localTest() {
     s61SiteBase = "http://localhost:8383";
     s61Supporty=s61SiteBase;
 }
- localTest();
+// localTest();
 
 function s61Select(e) {
     return document.querySelector(e);
