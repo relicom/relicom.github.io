@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Judith Smith About profile</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/reset_flex.css"/>
+        <link rel="stylesheet" type="text/css" href="css/color_pallet.css"/>
+        <link rel="stylesheet" type="text/css" href="css/font_awesome_all.css"/>
+        <link rel="stylesheet" type="text/css" href="css/toastify.css"/>
+        <link rel="stylesheet" type="text/css" href="css/dialog.css"/>
+        <link rel="stylesheet" type="text/css" href="css/live.css"/>
+    </head>
+    <body>
+        <div class="live_div">
+            <div class="live_wrapper">
+                <div class="chat_div">
+                    <div class="chat_sub_div">
+                        <div class="cam_div">
+                            <div id="supporter_video">
+                                <span class="name">کارشناس مشاور</span>
+                                <video autoplay playsinline></video>
+                                <div class="vi_sp">
+                                    <!--<span class="speed"></span>-->
+                                    <span><i class="fa fa-eye"></i><span id="viewer_count"></span></span>
+                                </div>
+                            </div>
+                            <div id="customer_video" class="hide">
+                                <span class="name">مشتری</span>
+                                <video autoplay playsinline></video>
+                                <div class="vi_sp">
+                                    <!--<span class="speed"></span>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controller_div">
+                            <span id="close_live_bt" class="button_ctr2 bg-css-red" title="خروج"><i class="fa fa-arrow-right"></i></span>
+                            <span id="close_customer_bt" class="button_ctr2 bg-css-brown" title="خاتمه دادن به گفتگو"><i class="fa fa-times"></i></span>
+                            <span id="min_max_bt" class="button_ctr2 bg-css-dirtyyellowgreen" title="بزرگ نمایی و کوچک نمایی"><i class="fa fa-expand"></i></span>
+                            <a href="/supporty_template_rtl/help/help_main.html" target="_blank" style="display:flex"><span id="help_bt" class="button_ctr2 bg-css-lightblue" title="راهنما"><i class="fa fa-question-circle"></i></span></a>
+                            <span id="mobile_pm_bt" class="button_ctr2 bg-css-pink m_show" title="مشاهده صفحه محصول و پیام ها"><i class="fa fa-window-minimize"></i><span class="hide">1</span></span>
+                            <span id="add_remove_request_bt" class="button_ctr2 bg-css-blue" title="لیست انتظار"><i class="fas fa-hand-pointer"></i></span>
+                        </div>
+                    </div>
+                    <div id="talk_number" class="hide"><p>شماره انتظار برای گفتگو: <span></span></p></div>
+                    <div id="chat_sub2" class="chat_sub_div">
+                        <div class="pm_div hide">
+                            <div id="message" contenteditable>
+                            </div>
+                            <div class="chat_bt_div">
+                                <span id="lock_bt" class="button_ctr bg-css-darkpurple"><i class="fas fa-lock"></i> <span>قفل</span></span>
+                                <!--<span id="liked_bt" class="button_ctr bg-css-red"><i class="fas fa-heart"></i> اضافه کن</span>-->
+                                <span id="offer_bt" class="button_ctr bg-css-green"><i class="fas fa-mug-hot"></i> پیشنهاد</span>
+                                <span id="private_bt" class="button_ctr bg-css-blue"><i class="fas fa-paper-plane"></i> ارسال</span>                                
+                            </div>
+                        </div>
+                        <div id="text_div"></div>
+                        <div class="slogan m_hide">
+                            <a href="http://daum.net:8383/supporty_template_rtl/site.html" target="_blank"><span>ساپورتی، خرید آگاهانه</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="iframe_div m_hide">
+                    <iframe id="iframe" src="/store/bread_basket.html"></iframe>
+                    <!--<div id="iframe_bt_div">-->
+                    <span id="product_favorite_bt" class="bg-css-purple button_ctr2"><i class="fas fa-heart"></i></span>
+                    <span id="favorite_list_bt" class="bg-css-darkgreen button_ctr2"><a href="./favorite_list.html" target="_blank"><i class="fas fa-list-ol"></i></a></span>
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div id="first_check">
+            <!--<p>لطفا کمی تامل کنید تا اطلاعات بررسی شود</p>-->
+            <p>بعد از بررسی اطلاعات وارد اتاق خواهید شد</p>
+        </div>
+
+        <script src="js/jsencrypt.min.js"></script>
+        <script src="js/adapter.min.js"></script>
+        <script src="js/janus.js"></script>
+        <script src="js/toastify.js"></script>
+        <script src="js/general_tools.js"></script>
+        <script src="js/live_general_tools.js"></script>
+        <script src="js/live_score.js"></script>
+        <script src="js/live_participant.js"></script>        
+        <script src="js/videoroomtest.js"></script>
+        <script src="js/videoroomtest_customer.js"></script>
+        
+
+    </body>
+</html>
+
+
+
+
