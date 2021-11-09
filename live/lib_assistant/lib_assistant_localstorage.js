@@ -11,6 +11,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61self = window.self.location.origin, s61url = location.pathname,
         s61Check = '/json/supporters.json', s61hash = s61hashCode(s61url),
         /*change my site in future*/s61Supporty = "http://qwer";
+s61Supporty=s61SiteBase;
 
 //DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
 //var s61top = window.top.location.origin;
