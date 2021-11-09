@@ -7,7 +7,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61SiteBase = s61w.dataset.baseurl, s61ga = s61w.dataset.ga, s61Domain = s61w.dataset.domain,
         s61ti = (s61ti !== null ? s61ti.textContent.trim() : null),
         s61Valid = (s61Day > 70 && s61im !== null && s61ti !== null),
-        s61ls = localStorage, s61b = "/live/", s61ProductPrefix = "S61P",
+        s61ls = localStorage, s61b = "/live", s61ProductPrefix = "S61P",
         s61self = window.self.location.origin, s61url = location.pathname,
         s61Check = '/json/supporters.json', s61hash = s61hashCode(s61url),
         /*change my site in future*/s61Supporty = "http://qwer";
@@ -41,7 +41,7 @@ function s61Init() {
     var s61css = document.createElement("link");
     s61css.type = "text/css";
     s61css.rel = "stylesheet";
-    s61css.href = s61b + "../lib_assistant/lib_assistant_localstorage.css";
+    s61css.href = s61b + "/lib_assistant/lib_assistant_localstorage.css";
     document.head.appendChild(s61css);
 
     var s61Status = Number(s61ls.getItem("s61s")), s61Time = Number(s61ls.getItem("s61t")), s61Dration = Number(s61ls.getItem("s61d")), s61Now = new Date() * 1;
