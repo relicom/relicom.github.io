@@ -121,7 +121,7 @@ function videoElemCallback(isLocalStream, isGone, remoteFeed) {
     var id = remoteFeed ? remoteFeed.rfid : 0;
     if ((amICustomer && (isLocalStream || (isTalkRightNow && isSupporterJoined) || (!isSupporterJoined && (currentParticipantRoomId === -1 || currentParticipantRoomId === id)))) ||
 //            (!amICustomer && id && id !== trio.userRoomId)) {
-    (!amICustomer && id && id === currentParticipant.userRoomId)) {
+    (!amICustomer && id &&currentParticipant&& id === currentParticipant.userRoomId)) {
 //        var c = customerVideo.classList;
 //        if (isGone) {
 ////            c.add(hide);
