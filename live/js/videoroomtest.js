@@ -284,6 +284,8 @@ function startLive(config) {
 //                                            trio.destroyServer(janus, handler);
                                             trio.destroyServer();
 //                                            window.location.reload();
+                                        } else if (msg["error_code"] === 433) {
+                                            toast.error("شما دسترسی لازم برای ورود به اتاق را ندارید");
                                         } else {
 //                                            console.log("MSG1:" + msg["error"], msg);
                                             Janus.error("MSG1:" + msg["error"],msg);
@@ -375,6 +377,12 @@ function startLive(config) {
                 display: config.isSupporter ? "s" : "c"
 //            display: displayName
             };
+            if(config.pin){
+                register.pin=config.pin;
+            }
+            if(config.token){
+                register.token=config.token;
+            }
             handler.send({message: register});
         });
     }
