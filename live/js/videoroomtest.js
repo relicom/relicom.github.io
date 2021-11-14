@@ -501,6 +501,7 @@ console.log(config);
                     room: config.roomId,
                     ptype: "subscriber",
                     feed: id,
+                    pin:config.pin,
                     private_id: mypvtid
                 };
                 // In case you don't want to receive audio, video or data, even if the
