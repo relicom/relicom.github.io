@@ -101,7 +101,7 @@
 //    console.log("============== participantNumber:","isJoin",isJoin,"id",id);
 //}
 function startLive(config) {
-
+console.log(config);
     var trio = {};
 //    var server = null;
 //    if (window.location.protocol === 'http:')
