@@ -1,5 +1,12 @@
-var ttest;
-
+//var ttest;
+var SERVER_CMD=Object.freeze({
+    SET_STATISTICS_DATA:9,
+   SET_RSA_AND_PUBLISHER_ID:10,
+   SET_RSA_AND_PUBLISHER_ID_RESPONSE:11,
+   KICK_USER:15,
+   BAN_USER:16,
+   END_LIVE:17
+});
 var supporterCrypt = new JSEncrypt();
 supporterCrypt.getKey();
 //supporterCrypt.setPrivateKey('-----BEGIN RSA PRIVATE KEY-----\nMIICXgIBAAKBgQChsTH1BMLitw1i8tv5LODyBk6/hMWozT+YNHXN/7vJ5Z2T10bK\nM1vL2H+oUZy5XkrcaVqc16VJBz/apQ49cm52t+uoDbavYXRXO34dBYzvvk8Avt+b\nuX24fsJ92tGApljOvRW82nT/qtmeRXEiXK8KB9NB7nv1zxYaLJy4C+TiKQIDAQAB\nAoGAQ9kCyXmR/WgqadbWjxxR17zl1l90QXy+rrN0q1ggCHwdPygaQEaEwmi6SHrW\ndMIoT4y1xRKH/LjaBnk0HHyj9Oe5I6WV/uphDdmRWH0q0U9bR3ShR7OspIxhIYe1\nVKOsuR6OArRD4vTeOynXj5G4IlChKUynN2kHyvTnwPlLLcECQQDxpPhdDS89dBst\nbqt625qNP1vGuRIPEzpfoJ003zZzkBY6B/9p0uaxjwGm39cSAKPxPgPejD0WAogG\nIGgTJrzlAkEAq0xHEVmDHbVQGdWiL7GIe61jgjdUCVQJfOC7vTrSspELhLzGw96d\nJ+Z7oJcW//zkiSoFXyIjlsoHecITamL/9QJBALObsx821Y4P5sN2Ju9CmzWxij3D\nAbFC0XiSoUbTQl3TEzI/D5FQuTfw24F1jx5Ka5C8T5PzGNRrPT+Qhsr1WCECQQCH\naeVEcd6UvaB0y81Kpq2eF5NyfQqR1T0q2v2OudGWF9NjO1hlvrW9tRZF/SrRcrm3\nNODKM9KugUcnmaR/lYOBAkEAu4r6BIXlEXxKc69Ew9u3FPTD4Wk4gLRQbd6X/7Gr\nvDe1GB0oOD57s5ZpbLH7ETWpiosBYepWd4Zt2lBmHhMgrw==\n-----END RSA PRIVATE KEY-----');
@@ -53,7 +60,7 @@ function checkParams() {
             }
         }
     }
-    ttest = c;
+//    ttest = c;
     if (myInfo.siteId && myInfo.supporterId && myInfo.supporterRsaPublicKey && myInfo.talkSession && myInfo.serverSession &&
             myInfo.userType === USER_TYPE.SUPPORTER && c.host && c.roomId && c.token && c.pin && c.maxCap) {
         trio = startLive(c);
@@ -71,19 +78,22 @@ function videoRoomCallback(myId) {
     console.log("============== videoRoomCallback I'm joined successfully ==============", "myId:" + myId);
     if (myId) {
         myInfo.supporterRoomId = myId;
-        var j = {data: {rsaKey: myInfo.supporterRsaPublicKey, supporterRoomId: myInfo.supporterRoomId}};
+        var j = {cmd:SERVER_CMD.SET_RSA_AND_PUBLISHER_ID,rsaKey: myInfo.supporterRsaPublicKey, supporterRoomId: myInfo.supporterRoomId};
         orchesterSend(j, function (isSent, result) {
             //*** true because just for test, orchester endpoint is not ready yet and i got always error so with true i pass this step
-            if (true || isSent) {
+            if (isSent&&result&&result.status==="ok") {
                 //*** check result object to open live page
                 //
                 //*** just for test, i must be check successful result from orchester server then start to working
                 toast.success("به اتاق مشاوره متصل شدید ، خوش آمدید");
+                if(result.msg){
+                    toast.success(result.msg);
+                }
                 firstCheck.classList.add("hide");
                 //*** just for test, set participant page data :
                 //siteid=3213&supporterid=3213&supporterroomid=312-31231-321-321&talksession=321dsadas&serversession=312bdfhsb&usertype=1&cap=6&host=ubun.tu&roomid=1234&token=token1234&pin=pin1234&endpoint=http://www.google.com/endpoint1/supporter&rsakey=-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQChsTH1BMLitw1i8tv5LODyBk6/\nhMWozT+YNHXN/7vJ5Z2T10bKM1vL2H+oUZy5XkrcaVqc16VJBz/apQ49cm52t+uo\nDbavYXRXO34dBYzvvk8Avt+buX24fsJ92tGApljOvRW82nT/qtmeRXEiXK8KB9NB\n7nv1zxYaLJy4C+TiKQIDAQAB\n-----END PUBLIC KEY-----
-                g("#test_participant_page").href = "http://localhost:8383/VideoRoom/live/live_page_participants_purejs.html#" +
-                        b64EncodeUnicode("baseurl=" + myInfo.siteBaseUrl + "&siteid=123&supporterid=1234&supporterroomid=" + myInfo.supporterRoomId + "&talksession=talksession1234&serversession=serversession1234&usertype=" + USER_TYPE.PARTICIPANT + "&cap=6&host=https://ubun.tu:8089/janus&roomid=1234&token=token1234&pin=pin1234&endpoint=http://qwer/live/customer&rsakey=" + b64EncodeUnicode(myInfo.supporterRsaPublicKey));
+//                g("#test_participant_page").href = "http://localhost:8383/VideoRoom/live/live_page_participants_purejs.html#" +
+//                        b64EncodeUnicode("baseurl=" + myInfo.siteBaseUrl + "&siteid=123&supporterid=1234&supporterroomid=" + myInfo.supporterRoomId + "&talksession=talksession1234&serversession=serversession1234&usertype=" + USER_TYPE.PARTICIPANT + "&cap=6&host=https://ubun.tu:8089/janus&roomid=1234&token=token1234&pin=pin1234&endpoint=http://qwer/live/customer&rsakey=" + b64EncodeUnicode(myInfo.supporterRsaPublicKey));
                 setInterval(function () {
                     var j = {data: {viewerCount: participantIds.length + 1}};
                     supporterEncryptAgent(CMD.INTERVAL_INFO, j);
@@ -91,11 +101,17 @@ function videoRoomCallback(myId) {
                 }, 5000);
             } else {
                 toast.error("ارسال اطلاعات به سرور با خطا روبرو شد لطفا اتصال اینترنت خود را چک کنید و دوباره به برگزاری لایو اقدام فرمایید");
+                destroySession();
             }
         });
     } else {
         toast.error("بدرستی به اتاق متصل نشدید لطفا دوباره برای ورود به اتاق اقدام فرمایید");
     }
+}
+function destroySession() {
+    trio.destroyServer();
+    pmDiv.classList.add(hide);
+    getBackToProfile();
 }
 var currentParticipantRoomId = -1;
 function videoElemCallback(isLocalStream, isGone, remoteFeed) {
