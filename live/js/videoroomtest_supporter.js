@@ -71,7 +71,7 @@ function videoRoomCallback(myId) {
     console.log("============== videoRoomCallback I'm joined successfully ==============", "myId:" + myId);
     if (myId) {
         myInfo.supporterRoomId = myId;
-        var j = {data: {rsaKey: myInfo.rsaKey, supporterRoomId: myInfo.supporterRoomId}};
+        var j = {data: {rsaKey: myInfo.supporterRsaPublicKey, supporterRoomId: myInfo.supporterRoomId}};
         orchesterSend(j, function (isSent, result) {
             //*** true because just for test, orchester endpoint is not ready yet and i got always error so with true i pass this step
             if (true || isSent) {
