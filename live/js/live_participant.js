@@ -565,8 +565,10 @@ if (window.top === window.self) {
                 arr.push([k.substr(prefix.length), j[k].url, j[k].title, j[k].img, totalTime * 1000, timeKeys.length]);
             }
         }
+        if(arr.length>0){
         arr = sortArrayByNumber(4, arr);
         arr = arr.slice(0, 100);
+        }
         return arr;
     }
     g("#lock_bt").onclick = function () {
