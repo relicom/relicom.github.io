@@ -46,8 +46,8 @@ function checkParams() {
                 lostConnectionCallback:lostConnectionCallback
             }
 //*** fake parameter for test :
-            myInfo.talkSession = getRandom(1);
-            myInfo.talkServer = getRandom(1);
+//            myInfo.talkSession = getRandom(1);
+//            myInfo.talkServer = getRandom(1);
 //*** ^^^^ above parameter is for test
         }
     }
