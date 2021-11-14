@@ -10,7 +10,7 @@ var s61Ver = 1, //s61linkTypeEnum = Object.freeze({"organic": 1, "profile": 2}),
         s61ls = localStorage, s61b = "/live/lib_assistant/", s61ProductPrefix = "S61P",
         s61self = window.self.location.origin, s61url = location.pathname,
         s61Check = '/json/supporters.json', s61hash = s61hashCode(s61url),
-        /*change my site in future*/s61Supporty = "http://qwer";
+        /*change my site in future*/s61Supporty = "https://qwer";
 s61Supporty=s61SiteBase;
 
 //DOMException: Blocked a frame with origin , so I used window.top and window.self Objects to compare
