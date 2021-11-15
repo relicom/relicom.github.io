@@ -180,21 +180,26 @@ function getBackToProfile(error,time) {
     window.location.href = "http://daum.net/s/" + domain;
     },time||5000);
 }
-function orchesterSend(jsonParam, callback, endpoint) {
-    if (!endpoint) {
-        endpoint = myInfo ? myInfo.endpoint : null;
-        if (!endpoint) {
-            if (callback) {
-                callback(false, "no endpoint exist");
-            }
-            return false;
-        }
-    }
+function orchesterSend(jsonParam,endpoint, callback) {
+    if(jsonParam&&endpoint){
+//    if (!endpoint) {
+//        endpoint = myInfo ? myInfo.endpoint : null;
+//        if (!endpoint) {
+//            if (callback) {
+//                callback(false, "no endpoint exist");
+//            }
+//            return false;
+//        }
+//    }
+    endpoint=myInfo.endpoint+endpoint;
     var data = new FormData();
     data.append("siteId", myInfo.siteId);
     data.append("supporterId", myInfo.supporterId);
     data.append("serverSession", myInfo.serverSession);
-    data.append("param", JSON.stringify(jsonParam));
+    Object.keys(jsonParam).forEach(function(e){
+        data.append(e, jsonParam[e]);
+    });
+//    data.append("param", JSON.stringify(jsonParam));
 //        fetch('http://qwer/live/' + (amICustomer ? 'customer' : 'supporter'), {
     fetch(endpoint, {
         method: 'POST',
@@ -213,6 +218,7 @@ function orchesterSend(jsonParam, callback, endpoint) {
             callback(false, e);
         }
     });
+}
 }
 //========================================================= Modal Dialog ===========================================
 function showDialog(j) {

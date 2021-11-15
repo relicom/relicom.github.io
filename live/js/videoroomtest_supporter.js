@@ -1,11 +1,19 @@
 //var ttest;
-var SERVER_CMD=Object.freeze({
-    SET_STATISTICS_DATA:9,
-   SET_RSA_AND_PUBLISHER_ID:10,
-   SET_RSA_AND_PUBLISHER_ID_RESPONSE:11,
-   KICK_USER:15,
-   BAN_USER:16,
-   END_LIVE:17
+//var SERVER_CMD = Object.freeze({
+//    SET_STATISTICS_DATA: 9,
+//    SET_RSA_AND_PUBLISHER_ID: 10,
+//    SET_RSA_AND_PUBLISHER_ID_RESPONSE: 11,
+//    KICK_USER: 15,
+//    BAN_USER: 16,
+//    END_LIVE: 17
+//});
+var SERVER_ENDPOINT = Object.freeze({
+    SET_STATISTICS_DATA: "/statistics",
+    SET_RSA_AND_PUBLISHER_ID: "/keyandid",
+//   SET_RSA_AND_PUBLISHER_ID_RESPONSE:"",
+    KICK_USER: "/kick",
+    BAN_USER: "/ban",
+    END_LIVE: "/end"
 });
 var supporterCrypt = new JSEncrypt();
 supporterCrypt.getKey();
@@ -78,15 +86,16 @@ function videoRoomCallback(myId) {
     console.log("============== videoRoomCallback I'm joined successfully ==============", "myId:" + myId);
     if (myId) {
         myInfo.supporterRoomId = myId;
-        var j = {cmd:SERVER_CMD.SET_RSA_AND_PUBLISHER_ID,rsaKey: myInfo.supporterRsaPublicKey, supporterRoomId: myInfo.supporterRoomId};
-        orchesterSend(j, function (isSent, result) {
+//        var j = {cmd:SERVER_CMD.SET_RSA_AND_PUBLISHER_ID,rsaKey: myInfo.supporterRsaPublicKey, supporterRoomId: myInfo.supporterRoomId};
+        var j = {rsaKey: myInfo.supporterRsaPublicKey, supporterRoomId: myInfo.supporterRoomId};
+        orchesterSend(j, SERVER_ENDPOINT.SET_RSA_AND_PUBLISHER_ID, function (isSent, result) {
             //*** true because just for test, orchester endpoint is not ready yet and i got always error so with true i pass this step
-            if (isSent&&result&&result.status==="ok") {
+            if (isSent && result && result.status === "ok") {
                 //*** check result object to open live page
                 //
                 //*** just for test, i must be check successful result from orchester server then start to working
                 toast.success("به اتاق مشاوره متصل شدید ، خوش آمدید");
-                if(result.msg){
+                if (result.msg) {
                     toast.success(result.msg);
                 }
                 firstCheck.classList.add("hide");
@@ -94,11 +103,7 @@ function videoRoomCallback(myId) {
                 //siteid=3213&supporterid=3213&supporterroomid=312-31231-321-321&talksession=321dsadas&serversession=312bdfhsb&usertype=1&cap=6&host=ubun.tu&roomid=1234&token=token1234&pin=pin1234&endpoint=http://www.google.com/endpoint1/supporter&rsakey=-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQChsTH1BMLitw1i8tv5LODyBk6/\nhMWozT+YNHXN/7vJ5Z2T10bKM1vL2H+oUZy5XkrcaVqc16VJBz/apQ49cm52t+uo\nDbavYXRXO34dBYzvvk8Avt+buX24fsJ92tGApljOvRW82nT/qtmeRXEiXK8KB9NB\n7nv1zxYaLJy4C+TiKQIDAQAB\n-----END PUBLIC KEY-----
 //                g("#test_participant_page").href = "http://localhost:8383/VideoRoom/live/live_page_participants_purejs.html#" +
 //                        b64EncodeUnicode("baseurl=" + myInfo.siteBaseUrl + "&siteid=123&supporterid=1234&supporterroomid=" + myInfo.supporterRoomId + "&talksession=talksession1234&serversession=serversession1234&usertype=" + USER_TYPE.PARTICIPANT + "&cap=6&host=https://ubun.tu:8089/janus&roomid=1234&token=token1234&pin=pin1234&endpoint=http://qwer/live/customer&rsakey=" + b64EncodeUnicode(myInfo.supporterRsaPublicKey));
-                setInterval(function () {
-                    var j = {data: {viewerCount: participantIds.length + 1}};
-                    supporterEncryptAgent(CMD.INTERVAL_INFO, j);
-                    viewerCount.textContent = j.data.viewerCount;
-                }, 5000);
+                startIntervals();
             } else {
                 toast.error("ارسال اطلاعات به سرور با خطا روبرو شد لطفا اتصال اینترنت خود را چک کنید و دوباره به برگزاری لایو اقدام فرمایید");
                 destroySession();
@@ -117,11 +122,11 @@ var currentParticipantRoomId = -1;
 function videoElemCallback(isLocalStream, isGone, remoteFeed) {
     console.log("============== videoElemCallback ==============", "isLocalStream:" + isLocalStream, "isGone:" + isGone, "remoteFeed:", remoteFeed);
     if (!isGone) {
-    var isSupporterJoined = remoteFeed ? remoteFeed.rfdisplay === "s" : true;
-    var id = remoteFeed ? remoteFeed.rfid : 0;
-    if ((amICustomer && (isLocalStream || (isTalkRightNow && isSupporterJoined) || (!isSupporterJoined && (currentParticipantRoomId === -1 || currentParticipantRoomId === id)))) ||
+        var isSupporterJoined = remoteFeed ? remoteFeed.rfdisplay === "s" : true;
+        var id = remoteFeed ? remoteFeed.rfid : 0;
+        if ((amICustomer && (isLocalStream || (isTalkRightNow && isSupporterJoined) || (!isSupporterJoined && (currentParticipantRoomId === -1 || currentParticipantRoomId === id)))) ||
 //            (!amICustomer && id && id !== trio.userRoomId)) {
-    (!amICustomer && id &&currentParticipant&& id === currentParticipant.userRoomId)) {
+                (!amICustomer && id && currentParticipant && id === currentParticipant.userRoomId)) {
 //        var c = customerVideo.classList;
 //        if (isGone) {
 ////            c.add(hide);
@@ -156,10 +161,10 @@ function participantCounterCallback(id, isJoin) {
         } else if (!isJoin && participantIds.includes(id)) {
             if (typeof currentParticipant !== 'undefined' && currentParticipant.userRoomId === id) {
                 currentParticipant = null;
-                        
-             customerVideo.classList.add(hide);
-            currentParticipantRoomId = -1;
-            
+
+                customerVideo.classList.add(hide);
+                currentParticipantRoomId = -1;
+
                 toast.error("ارتباط مشتری جاری قطع شد");
                 cleanChatBox();
             }
@@ -410,6 +415,37 @@ function supporterEncryptAgent(...o) {
 //setTimeout(function () {
 //    g("#test_participant_page").href = "http://localhost:8383/VideoRoom/live/live_page_participants_purejs.html#supporterid=" + trio.userRoomId;
 //}, 3000)
+function startIntervals() {
+//    new Promise(function(){
+    setInterval(function () {
+        var j = {data: {viewerCount: participantIds.length + 1}};
+// *** uncomment in future                    supporterEncryptAgent(CMD.INTERVAL_INFO, j);
+        viewerCount.textContent = j.data.viewerCount;
+    }, 5000);
+//    });
+    var lastOrchesterConnected = new Date() * 1;
+//    new Promise(function(){
+    setInterval(function () {
+        var j = {viewerCount: participantIds.length + 1};
+        orchesterSend(j, SERVER_ENDPOINT.SET_STATISTICS_DATA, function (result) {
+            if (result.status === "ok") {
+                lastOrchesterConnected = new Date() * 1;
+                ;
+            }
+        });
+
+    }, 30000);//30 seconds
+//    });
+//    new Promise(function(){
+    setInterval(function () {
+        if (lastOrchesterConnected + 70000 < new Date() * 1) {
+            toast.error('متاسفانه ارتباط با هماهنگ کننده قطع شده است اینترنت خود را چک کنید و دوباره وارد اتاق شوید');
+            endParticipantTalk();
+            destroySession();
+        }
+    }, 90000);//90 seconds for orchester DC to leave the room
+//    });
+}
 
 function preSupporterLiveCheck() {
     var j = {title: ' برای ورود به اتاق آماده هستید ؟'};
