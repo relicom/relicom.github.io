@@ -115,7 +115,6 @@ function videoRoomCallback(myId) {
 }
 function destroySession() {
     trio.destroyServer();
-    pmDiv.classList.add(hide);
     getBackToProfile();
     orchesterSend({},SERVER_ENDPOINT.END_LIVE);
 }
