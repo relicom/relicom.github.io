@@ -438,8 +438,10 @@ function startIntervals() {
         if(myInfo.isConnected){
         var j = {viewerCount: participantIds.length + 1};
         orchesterSend(j, SERVER_ENDPOINT.SET_STATISTICS_DATA, function (isSuccessful,result) {
+            console.log("SERVER_ENDPOINT.SET_STATISTICS_DATA",isSuccessful,result);
             if (isSuccessful&&result.status === "ok") {
                 lastOrchesterConnected = new Date() * 1;
+                console.log("SERVER_ENDPOINT.SET_STATISTICS_DATA",lastOrchesterConnected);
             }
         });
         }
@@ -448,6 +450,7 @@ function startIntervals() {
 //    new Promise(function(){
     setInterval(function () {
         if (myInfo.isConnected&&lastOrchesterConnected + 70000 < new Date() * 1) {
+            console.log("destroySession",lastOrchesterConnected);
             toast.error('متاسفانه ارتباط با هماهنگ کننده قطع شده است اینترنت خود را چک کنید و دوباره وارد اتاق شوید');
             endParticipantTalk();
             destroySession();
