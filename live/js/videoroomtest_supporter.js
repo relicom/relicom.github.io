@@ -30,7 +30,7 @@ var trio;
 var participantIds = [];
 var firstCheck = g("#first_check")//, firstCheckTxt = g("#first_check p");
 var videoElems = [g("#supporter_video video"), g("#customer_video video")];
-var myInfo = {supporterRsaPublicKey: supporterCrypt.getPublicKey()};
+var myInfo = {supporterRsaPublicKey: supporterCrypt.getPublicKey(),isConnected:false};
 //$(document).ready(function () {
 function checkParams() {
     // url = ?baseurl=http://localhost:8383&siteid=312312&talksession=321dsadas&serversession=312bdfhsb&usertype=1&cap=6&host=ubun.tu&roomid=1234&token=token1234&pin=pin1234&endpoint=http://www.google.com/endpoint1/supporter
@@ -77,7 +77,10 @@ function checkParams() {
     }
 }
 function lostConnectionCallback() {
-    getBackToProfile("ارتباط اینترنتی دچار مشکل شد و ارتباط با اتاق قطع است");
+    if(myInfo.isConnected){
+        myInfo.isConnected=false;
+        getBackToProfile("ارتباط اینترنتی دچار مشکل شد و ارتباط با اتاق قطع است");
+    }
 }
 function peerConnectionCallback(isOn, remoteFeed) {
     console.log("============== peerConnectionCallback isOn? ==============", isOn);
@@ -103,7 +106,9 @@ function videoRoomCallback(myId) {
                 //siteid=3213&supporterid=3213&supporterroomid=312-31231-321-321&talksession=321dsadas&serversession=312bdfhsb&usertype=1&cap=6&host=ubun.tu&roomid=1234&token=token1234&pin=pin1234&endpoint=http://www.google.com/endpoint1/supporter&rsakey=-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQChsTH1BMLitw1i8tv5LODyBk6/\nhMWozT+YNHXN/7vJ5Z2T10bKM1vL2H+oUZy5XkrcaVqc16VJBz/apQ49cm52t+uo\nDbavYXRXO34dBYzvvk8Avt+buX24fsJ92tGApljOvRW82nT/qtmeRXEiXK8KB9NB\n7nv1zxYaLJy4C+TiKQIDAQAB\n-----END PUBLIC KEY-----
 //                g("#test_participant_page").href = "http://localhost:8383/VideoRoom/live/live_page_participants_purejs.html#" +
 //                        b64EncodeUnicode("baseurl=" + myInfo.siteBaseUrl + "&siteid=123&supporterid=1234&supporterroomid=" + myInfo.supporterRoomId + "&talksession=talksession1234&serversession=serversession1234&usertype=" + USER_TYPE.PARTICIPANT + "&cap=6&host=https://ubun.tu:8089/janus&roomid=1234&token=token1234&pin=pin1234&endpoint=http://qwer/live/customer&rsakey=" + b64EncodeUnicode(myInfo.supporterRsaPublicKey));
+                myInfo.isConnected=true;
                 startIntervals();
+                
             } else {
                 toast.error("ارسال اطلاعات به سرور با خطا روبرو شد لطفا اتصال اینترنت خود را چک کنید و دوباره به برگزاری لایو اقدام فرمایید");
                 destroySession();
@@ -418,26 +423,31 @@ function supporterEncryptAgent(...o) {
 function startIntervals() {
 //    new Promise(function(){
     setInterval(function () {
+        if(myInfo.isConnected){
         var j = {data: {viewerCount: participantIds.length + 1}};
 // *** uncomment in future                    supporterEncryptAgent(CMD.INTERVAL_INFO, j);
         viewerCount.textContent = j.data.viewerCount;
+    }else{
+        viewerCount.textContent ="0";
+    }
     }, 5000);
 //    });
     var lastOrchesterConnected = new Date() * 1;
 //    new Promise(function(){
     setInterval(function () {
+        if(myInfo.isConnected){
         var j = {viewerCount: participantIds.length + 1};
         orchesterSend(j, SERVER_ENDPOINT.SET_STATISTICS_DATA, function (result) {
             if (result.status === "ok") {
                 lastOrchesterConnected = new Date() * 1;
             }
         });
-
+        }
     }, 30000);//30 seconds
 //    });
 //    new Promise(function(){
     setInterval(function () {
-        if (lastOrchesterConnected + 70000 < new Date() * 1) {
+        if (myInfo.isConnected&&lastOrchesterConnected + 70000 < new Date() * 1) {
             toast.error('متاسفانه ارتباط با هماهنگ کننده قطع شده است اینترنت خود را چک کنید و دوباره وارد اتاق شوید');
             endParticipantTalk();
             destroySession();
