@@ -214,6 +214,7 @@ function orchesterSend(jsonParam,endpoint, callback) {
             callback(true, d);
         }
     }).catch(function (e) {
+        toast.error("ارتباط با هماهنگ کننده اتاق برقرار نیست، اینترنت خود را چک کنید");
         if (callback) {
             callback(false, e);
         }

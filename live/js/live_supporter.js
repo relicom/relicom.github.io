@@ -23,11 +23,15 @@ if (window.top === window.self) {
         j.control = '<span id="close_live_page" class="button_ctr2 bg-css-red bt"><i class="fas fa-walking"></i> بله صفحه لایو را میبندم</span>';
         showDialog(j);
         g("#close_live_page").onclick = function () {
-            console.log("openProfile", new Date());
             //*** close janus videoroom and stream 
             //*** close live session and calculate price in server and check to close videoroom and stream too
             //*** after catch close live message from server then redirect current page to site supporty profile
-            window.location = "/supporty_template_rtl/motherpage_home.html#profile_site";
+//            orchesterSend({},SERVER_ENDPOINT.END_LIVE,function(isSuccess,result){
+//                if(isSuccess&&result.status=="ok"){
+//                    destroySession();
+//                }
+//            });
+            destroySession();
         }
     }
     g("#close_customer_bt").onclick = function () {
@@ -42,6 +46,9 @@ if (window.top === window.self) {
                 endParticipantTalk();
                 cleanChatBox();
 //                currentParticipant = null; //it's will be null when user leaved the room in videoroomtest.js > participantCounterCallback
+                if (currentParticipant) {
+                    orchesterSend({publisherId: currentParticipant.userRoomId}, SERVER_ENDPOINT.KICK_USER);
+                }
                 closeDialog();
             }
         } else {
@@ -545,8 +552,8 @@ if (window.top === window.self) {
             if (previousActiveParticipant) {
                 var j = {title: ' مطمئنی میخوای این کاربر را مسدود کنی ؟'};
                 j.body = '<span>شماره مشتری : ' + previousActiveParticipant.talkNumber + '</span>' +
-                        '<span>علت : <sub>(حداکثر 500 حرف)</sub></span>' +
-                        '<textarea maxlength="500"></textarea>';
+                        '<span>علت : <sub>(حداکثر 250 حرف)</sub></span>' +
+                        '<textarea maxlength="250"></textarea>';
                 j.control = '<span id="ban_user" class="button_ctr2 bg-css-red bt"><i class="fas fa-ban"></i> بله مسدود میکنم</span>';
                 var dialog = showDialog(j);
                 g("textarea", dialog).focus();
@@ -560,7 +567,17 @@ if (window.top === window.self) {
                     } else if (check[0]) {
                         if (reasons.length < 10) {
                             toast.error("متن علت مسدود کردن کاربر خیلی کوتاه است");
+                        } else if (reasons.length > 250) {
+                            toast.error("متن علت مسدود کردن کاربر خیلی زیاد است");
                         } else {
+                            var json = {talkSession: previousActiveParticipant.talkSession, publisherId: previousActiveParticipant.userRoomId, reason: reasons};
+                            orchesterSend(json, SERVER_ENDPOINT.BAN_USER, function (isSuccess, result) {
+                                if (isSuccess) {
+                                    if (result.status === "ok") {
+                                        toast.success("کاربر با موفقیت مسدود شد");
+                                    }
+                                }
+                            });
 //$.POST currentUserName , reasons
 //*** after to send request and get succeed result ban dialog must be removed
                             closeDialog();

@@ -117,6 +117,7 @@ function destroySession() {
     trio.destroyServer();
     pmDiv.classList.add(hide);
     getBackToProfile();
+    orchesterSend({},SERVER_ENDPOINT.END_LIVE);
 }
 var currentParticipantRoomId = -1;
 function videoElemCallback(isLocalStream, isGone, remoteFeed) {
@@ -430,7 +431,6 @@ function startIntervals() {
         orchesterSend(j, SERVER_ENDPOINT.SET_STATISTICS_DATA, function (result) {
             if (result.status === "ok") {
                 lastOrchesterConnected = new Date() * 1;
-                ;
             }
         });
 
