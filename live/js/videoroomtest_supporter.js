@@ -164,7 +164,7 @@ function participantCounterCallback(id, isJoin) {
         if (isJoin && !participantIds.includes(id)) {
             participantIds.push(id);
         } else if (!isJoin && participantIds.includes(id)) {
-            if (typeof currentParticipant !== 'undefined' && currentParticipant.userRoomId === id) {
+            if (currentParticipant && currentParticipant.userRoomId === id) {
                 currentParticipant = null;
 
                 customerVideo.classList.add(hide);
