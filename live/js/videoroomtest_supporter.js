@@ -437,8 +437,8 @@ function startIntervals() {
     setInterval(function () {
         if(myInfo.isConnected){
         var j = {viewerCount: participantIds.length + 1};
-        orchesterSend(j, SERVER_ENDPOINT.SET_STATISTICS_DATA, function (result) {
-            if (result.status === "ok") {
+        orchesterSend(j, SERVER_ENDPOINT.SET_STATISTICS_DATA, function (isSuccessful,result) {
+            if (isSuccessful&&result.status === "ok") {
                 lastOrchesterConnected = new Date() * 1;
             }
         });
